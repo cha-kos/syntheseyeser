@@ -22,7 +22,7 @@ In addition, this project will include:
 This app will consist of a single screen with a piano layout, volume and effects controls, along with nav links to the Github, my LinkedIn,
 and the About modal.  Synth controls will be controlled with using on click event handlers.  The synth will live centered in the window. On the bottom will be the piano keyboard and above the effects rack. From left to right of the effects rack will be volume control, frequency filter, and delay.  Additionally, a visual waveform representation of the current note being played will be added above the effects rack.  (see Bonus Features).
 
-![wireframes]
+![wireframe](https://github.com/chrishakos/Syntheseyes/blob/master/wireframe.png)
 
 ### Architecture and Technologies
 
@@ -60,7 +60,7 @@ Learn the `Tone.js` and `NexusUI.js` API. Build out the filter and delay to be w
 - Make each key in the board clickable, playing a note on each click.
 - Add visual filter controller and buttons to control delay.
 
-**Day 3**: Connect the visual filter and delay buttons to live update the values when changes.
+**Day 3**: Connect the visual filter control and delay buttons to live update the values when changes.
 - Make the effects apply to the audio immediately
 - Have the visual autofilter working based on a scale of 0hz-22khz
 
