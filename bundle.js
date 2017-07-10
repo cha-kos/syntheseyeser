@@ -60,74 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 82);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 185:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.start = undefined;
-
-var _tone = __webpack_require__(81);
-
-var _tone2 = _interopRequireDefault(_tone);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var synth = new _tone2.default.Synth();
-var synth2 = new _tone2.default.Synth();
-
-// synth.toMaster();
-// synth2.toMaster();
-
-
-// synth.triggetAttackRelease("C4", 0.25, time);
-
-var pattern = new _tone2.default.Pattern(function (time, none) {
-  synth.triggerAttackRelease(none, 0.5);
-}, ["E1", "C1", "A1", "G1", "F1"]);
-
-var pattern2 = new _tone2.default.Pattern(function (time, none) {
-  synth2.triggerAttackRelease(none, 0.5);
-}, ["E3", "C3", "A3", "G3", "F3"]);
-
-pattern.start(1);
-
-pattern2.start(1);
-
-var start = exports.start = function start() {
-  return _tone2.default.Transport.start();
-};
-
-/***/ }),
-
-/***/ 186:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var createKeyboard = exports.createKeyboard = function createKeyboard() {
-  var keyboard = document.getElementById("keyboard");
-  var keyCtx = keyboard.getContext("2d");
-  keyCtx.fillStyle = "red";
-  keyCtx.fillRect = (10, 10, 100, 50);
-};
-
-/***/ }),
-
-/***/ 81:
+/******/ ([
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory){
@@ -22571,22 +22508,23 @@ var __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory){
 }));
 
 /***/ }),
-
-/***/ 82:
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _arp = __webpack_require__(185);
+var _arp = __webpack_require__(2);
 
 var Arp = _interopRequireWildcard(_arp);
 
-var _tone = __webpack_require__(81);
+var _tone = __webpack_require__(0);
 
 var _tone2 = _interopRequireDefault(_tone);
 
-var _keyboard = __webpack_require__(186);
+var _constants = __webpack_require__(3);
+
+var _waveformparticles = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22596,115 +22534,299 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 document.addEventListener("DOMContentLoaded", function () {
   var fft = new _tone2.default.Analyser('fft', 32);
-  var waveform = new _tone2.default.Analyser('waveform', 4096);
-  var delay = new _tone2.default.FeedbackDelay(0, 0).fan(waveform, fft).toMaster();
-  var synth = new _tone2.default.Synth({ oscillator: { type: "sine" } }).connect(delay);
+  // var waveform = new Tone.Analyser('waveform', 4096);
+  var delay = new _tone2.default.FeedbackDelay(0, 0).fan(_waveformparticles.waveform, fft).toMaster();
+  delay.wet._param.value = 0.5;
+  var synth = new _tone2.default.FMSynth({ oscillator: { type: "sine" } }).connect(delay);
 
-  document.querySelectorAll('button').forEach(function (button) {
-    button.addEventListener('mousedown', function (e) {
+  nx.onload = function () {
 
-      synth.triggerAttackRelease(e.target.id);
-    });
-    button.addEventListener('mouseup', function (e) {
-
-      synth.triggerRelease();
+    feedback.on('value', function (value) {
+      delay.feedback.overridden = true;
+      delay.feedback._param.value = value;
     });
 
-    // Arp.start();
+    delayTime.on('value', function (value) {
+      delay.delayTime.overridden = true;
+      delay.delayTime._param.value = value;
+    });
 
-    // var canvas = document.getElementById("Canvas");
-    // var canvasCtx = canvas.getContext("2d");
-    // canvas.width = 800;
-    // canvas.height = 400;
-
-    nx.onload = function () {
-      feedback.on('value', function (value) {
-        console.log(value);
-        delay.feedback.overridden = true;
-        delay.feedback._param.value = value;
-      });
-
-      delayTime.on('value', function (value) {
-        console.log(value);
-        console.log(delay);
-        delay.delayTime.overridden = true;
-        delay.delayTime._param.value = value;
-      });
-    };
-
-    // function draw() {
-    //   requestAnimationFrame(draw);
-    //   let fftArr= fft.analyse();
-    //   // console.log(fftArr);
-    //
-    //   // analyser.getByteFrequencyData(dataArray);
-    //   let WIDTH = canvas.width;
-    //   let HEIGHT = canvas.height;
-    //   canvasCtx.fillStyle = 'rgb(233,34,101)';
-    //   canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-    //
-    //   var barWidth = (WIDTH / fftArr.length) * 2;
-    //   var barHeight;
-    //   var x = 0;
-    //
-    //   for(var i = 0; i < fftArr.length; i++) {
-    //     barHeight = fftArr[i] / 2;
-    //
-    //     canvasCtx.fillStyle = 'rgb(56,181,75)';
-    //     canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight);
-    //
-    //     x += barWidth + 1;
-    //   }
-    // }
-
-    // draw();
-
-
-    var canvas2 = document.getElementById("wave");
-    var canvasCtx2 = canvas2.getContext("2d");
-    canvas2.width = 800;
-
-    function draw2() {
-      requestAnimationFrame(draw2);
-      var waveData = waveform.analyse();
-
-      var WIDTH = canvas2.width;
-      var HEIGHT = canvas2.height;
-      canvasCtx2.fillStyle = 'rgb(56,181,75)';
-      canvasCtx2.fillRect(0, 0, WIDTH, HEIGHT);
-
-      canvasCtx2.lineWidth = 2;
-      canvasCtx2.strokeStyle = 'rgb(233,34,101)';
-
-      canvasCtx2.beginPath();
-
-      var sliceWidth = WIDTH * 1.0 / waveData.length;
-      var x = 0;
-
-      for (var i = 0; i < waveData.length; i++) {
-        var v = waveData[i] / 128;
-        var y = v * HEIGHT / 2;
-
-        if (i === 0) {
-          canvasCtx2.moveTo(x, y);
-        } else {
-          canvasCtx2.lineTo(x, y);
-        }
-
-        x += sliceWidth;
+    keyboard.on('*', function (data) {
+      if (data.on !== 0) {
+        synth.triggerAttackRelease(_constants.NOTES[data.note - 48], "8n");
+        console.log(_constants.NOTES[data.note - 48], data);
       }
+    });
+  };
 
-      canvasCtx2.lineTo(canvas2.width, canvas2.height / 2);
-      canvasCtx2.stroke();
-    }
+  document.onkeydown = function (e) {
+    keyboard.toggle(keyboard.keys[_constants.KEY_OBJ[e.keyCode].key]);
+  };
+  document.onkeyup = function (e) {
+    keyboard.toggle(keyboard.keys[_constants.KEY_OBJ[e.keyCode].key]);
+  };
 
-    draw2();
+  // var canvas2 = document.getElementById("wave");
+  // var canvasCtx2 = canvas2.getContext("2d");
+  // canvas2.width = 800;
+  // canvas2.height = 250;
+  //
+  // function draw2() {
+  //   requestAnimationFrame(draw2);
+  //   let waveData = waveform.analyse();
+  //
+  //
+  //   let WIDTH = canvas2.width;
+  //   let HEIGHT = canvas2.height;
+  //   canvasCtx2.fillStyle = 'rgb(56,181,75)';
+  //   canvasCtx2.fillRect(0, 0, WIDTH, HEIGHT);
+  //
+  //   canvasCtx2.lineWidth = 2;
+  //   canvasCtx2.strokeStyle = 'rgb(233,34,101)';
+  //
+  //   canvasCtx2.beginPath();
+  //
+  //   var sliceWidth = WIDTH  / waveData.length;
+  //   var x = 0;
+  //
+  //   for(var i = 0; i < waveData.length; i++) {
+  //     var v = waveData[i] / 128;
+  //     var y = v * HEIGHT/2;
+  //
+  //     if(i === 0) {
+  //       canvasCtx2.moveTo(x, y);
+  //     } else {
+  //       canvasCtx2.lineTo(x, y);
+  //     }
+  //
+  //     x += sliceWidth;
+  //   }
+  //
+  //   canvasCtx2.lineTo(canvas2.width, canvas2.height/2);
+  //   canvasCtx2.stroke();
+  // }
+  //
+  // draw2();
 
-    (0, _keyboard.createKeyboard)();
-  });
+
+  (0, _waveformparticles.init)();
+  (0, _waveformparticles.animate)();
 });
+// import {init, animate, waveform} from './waveform3d.js';
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.start = undefined;
+
+var _tone = __webpack_require__(0);
+
+var _tone2 = _interopRequireDefault(_tone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var synth = new _tone2.default.Synth();
+var synth2 = new _tone2.default.Synth();
+
+// synth.toMaster();
+// synth2.toMaster();
+
+
+// synth.triggetAttackRelease("C4", 0.25, time);
+
+var pattern = new _tone2.default.Pattern(function (time, none) {
+  synth.triggerAttackRelease(none, 0.5);
+}, ["E1", "C1", "A1", "G1", "F1"]);
+
+var pattern2 = new _tone2.default.Pattern(function (time, none) {
+  synth2.triggerAttackRelease(none, 0.5);
+}, ["E3", "C3", "A3", "G3", "F3"]);
+
+pattern.start(1);
+
+pattern2.start(1);
+
+var start = exports.start = function start() {
+  return _tone2.default.Transport.start();
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var NOTES = exports.NOTES = ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3', 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'];
+
+var KEY_OBJ = exports.KEY_OBJ = {
+  65: {
+    note: 'C3',
+    key: 0
+  },
+  87: {
+    note: 'C#3',
+    key: 1
+  },
+  83: {
+    note: 'D3',
+    key: 2
+  },
+  69: {
+    note: 'D#3',
+    key: 3
+  },
+  68: {
+    note: 'E3',
+    key: 4
+  },
+  70: {
+    note: 'F3',
+    key: 5
+  }
+};
+
+/***/ }),
+/* 4 */,
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.waveform = undefined;
+exports.init = init;
+exports.animate = animate;
+
+var _tone = __webpack_require__(0);
+
+var _tone2 = _interopRequireDefault(_tone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SEPARATION = 10,
+    AMOUNTX = 100,
+    AMOUNTY = 100;
+var container, stats;
+var camera, scene, renderer;
+var particles,
+    particle,
+    count = 0;
+var mouseX = 0,
+    mouseY = 0;
+var windowHalfX = window.innerWidth / 2;
+var windowHalfY = window.innerHeight / 2;
+var waveform = exports.waveform = new _tone2.default.Analyser('waveform', 4096);
+// init();
+// animate();
+function init() {
+	container = document.createElement('div');
+	document.body.appendChild(container);
+	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+	camera.position.z = 500;
+	// camera.position.y = 180;
+	// camera.position.x = -450;
+	scene = new THREE.Scene();
+	particles = [];
+	var PI2 = Math.PI * 2;
+	var material = new THREE.SpriteCanvasMaterial({
+		color: 0xffffff,
+		program: function program(context) {
+			context.beginPath();
+			context.arc(0, 0, 0.5, 0, PI2, true);
+			context.fill();
+		}
+	});
+	var i = 0;
+	for (var ix = 0; ix < AMOUNTX; ix++) {
+		for (var iy = 0; iy < AMOUNTY; iy++) {
+			particle = particles[i++] = new THREE.Sprite(material);
+			particle.position.x = ix * SEPARATION - AMOUNTX * SEPARATION / 2;
+			particle.position.z = iy * SEPARATION - AMOUNTY * SEPARATION / 2;
+			scene.add(particle);
+		}
+	}
+	renderer = new THREE.CanvasRenderer();
+	renderer.setPixelRatio(window.devicePixelRatio);
+	renderer.setSize(800, 800);
+	document.body.appendChild(renderer.domElement);
+	// stats = new Stats();
+	// container.appendChild( stats.dom );
+	document.addEventListener('mousemove', onDocumentMouseMove, false);
+	document.addEventListener('touchstart', onDocumentTouchStart, false);
+	document.addEventListener('touchmove', onDocumentTouchMove, false);
+	//
+	window.addEventListener('resize', onWindowResize, false);
+}
+function onWindowResize() {
+	windowHalfX = window.innerWidth / 2;
+	windowHalfY = window.innerHeight / 2;
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+}
+//
+function onDocumentMouseMove(event) {
+	// mouseX = event.clientX - windowHalfX;
+	// mouseY = event.clientY - windowHalfY;
+}
+function onDocumentTouchStart(event) {
+	if (event.touches.length === 1) {
+		event.preventDefault();
+		mouseX = event.touches[0].pageX - windowHalfX;
+		mouseY = event.touches[0].pageY - windowHalfY;
+	}
+}
+function onDocumentTouchMove(event) {
+	if (event.touches.length === 1) {
+		event.preventDefault();
+		mouseX = event.touches[0].pageX - windowHalfX;
+		mouseY = event.touches[0].pageY - windowHalfY;
+	}
+}
+//
+function animate() {
+	requestAnimationFrame(animate);
+	render();
+	// stats.update();
+}
+function render() {
+	camera.position.x += (mouseX - camera.position.x) * 0.05;
+	camera.position.y += (-mouseY - camera.position.y) * 0.05;
+	camera.lookAt(scene.position);
+	// console.log(camera.position);
+
+	var array = waveform.analyse();
+	var i = 0;
+	for (var ix = 0; ix < 100; ix++) {
+		for (var iy = 0; iy < 100; iy++) {
+			particle = particles[i];
+			particle.position.y = array[i] - 128;
+			i++;
+			//
+			// // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
+			// // 	( Math.sin( ( iy + count ) * 0.5 ) * 50 );
+			// particle.position.y = array[iy];
+			// particle.scale.x = particle.scale.y = 10;
+		}
+	}
+	renderer.render(scene, camera);
+	count += 0.1;
+}
 
 /***/ })
-
-/******/ });
+/******/ ]);
 //# sourceMappingURL=bundle.js.map

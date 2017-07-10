@@ -36,3 +36,48 @@ function drawFFT(values){
 //   height: 255px;
 // }
 // </style>
+
+// document.querySelectorAll('button').forEach(function(button){
+// 	button.addEventListener('mousedown', function(e){
+//
+// 		synth.triggerAttackRelease(e.target.id);
+// 	});
+// 	button.addEventListener('mouseup', function(e){
+//
+// 		synth.triggerRelease();
+//   });
+
+  // Arp.start();
+
+  // var canvas = document.getElementById("Canvas");
+  // var canvasCtx = canvas.getContext("2d");
+  // canvas.width = 800;
+  // canvas.height = 400;
+
+
+  // function draw() {
+  //   requestAnimationFrame(draw);
+  //   let fftArr= fft.analyse();
+  //   // console.log(fftArr);
+  //
+  //   // analyser.getByteFrequencyData(dataArray);
+  //   let WIDTH = canvas.width;
+  //   let HEIGHT = canvas.height;
+  //   canvasCtx.fillStyle = 'rgb(233,34,101)';
+  //   canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+  //
+  //   var barWidth = (WIDTH / fftArr.length) * 2;
+  //   var barHeight;
+  //   var x = 0;
+  //
+  //   for(var i = 0; i < fftArr.length; i++) {
+  //     barHeight = fftArr[i] / 2;
+  //
+  //     canvasCtx.fillStyle = 'rgb(56,181,75)';
+  //     canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight);
+  //
+  //     x += barWidth + 1;
+  //   }
+  // }
+
+  // draw();
