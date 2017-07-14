@@ -1,7 +1,7 @@
 
     import Tone from 'tone';
 
-      var SEPARATION = 10, AMOUNTX = 100, AMOUNTY = 100;
+      var SEPARATION = 5, AMOUNTX = 64, AMOUNTY = 64;
 			var container, stats;
 			var camera, scene, renderer;
 			var particles, particle, count = 0;
@@ -12,17 +12,17 @@
 			// init();
 			// animate();
 			export function init() {
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				// container = document.createElement( 'div' );
+				// document.body.appendChild( container );
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.z = 500;
-        // camera.position.y = 180;
-        // camera.position.x = -450;
+				camera.position.z = 250;
+        camera.position.y = 100;
+        camera.position.x = -250;
 				scene = new THREE.Scene();
 				particles = [];
 				var PI2 = Math.PI * 2;
 				var material = new THREE.SpriteCanvasMaterial( {
-					color: 0xffffff,
+
 					program: function ( context ) {
 						context.beginPath();
 						context.arc( 0, 0, 0.5, 0, PI2, true );
@@ -40,7 +40,7 @@
 				}
 				renderer = new THREE.CanvasRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( 800, 800 );
+				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
 				// stats = new Stats();
 				// container.appendChild( stats.dom );
@@ -57,7 +57,7 @@
 				camera.updateProjectionMatrix();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 			}
-		
+
 			function onDocumentMouseMove( event ) {
 				mouseX = event.clientX - windowHalfX;
 				mouseY = event.clientY - windowHalfY;
@@ -83,23 +83,31 @@
 				// stats.update();
 			}
 			function render() {
-				camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-				camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+				// camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+				// camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
 				camera.lookAt( scene.position );
         // console.log(camera.position);
 
         var array = waveform.analyse();
 				var i = 0;
-				for ( var ix = 0; ix < 100; ix ++ ) {
-					for ( var iy = 0; iy < 100; iy ++ ) {
+				for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
+					for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
 						particle = particles[ i ];
-						particle.position.y = (array[i] -128);
+						particle.position.y = ((array[i] -128));
+            particle.scale.x = particle.scale.y = 2;
+            if ( (array[i] - 128) % 2 === 0 ){
+              particle.material.color.r = array[i] - 127;
+            }
+            else if ( (array[i] - 128) % 3 === 0 ){
+              particle.material.color.g = array[i] - 127;
+            }
+            // debugger
             i++;
+            // debugger
             //
             // // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
 						// // 	( Math.sin( ( iy + count ) * 0.5 ) * 50 );
             // particle.position.y = array[iy];
-						// particle.scale.x = particle.scale.y = 10;
 					}
 				}
 				renderer.render( scene, camera );

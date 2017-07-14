@@ -22524,7 +22524,7 @@ var _tone2 = _interopRequireDefault(_tone);
 
 var _constants = __webpack_require__(3);
 
-var _waveformparticles = __webpack_require__(5);
+var _waveformparticles = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22533,18 +22533,31 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // Arp.start();
 
 document.addEventListener("DOMContentLoaded", function () {
+
   var fft = new _tone2.default.Analyser('fft', 32);
   // var waveform = new Tone.Analyser('waveform', 4096);
   var delay = new _tone2.default.FeedbackDelay(0, 0).fan(_waveformparticles.waveform, fft).toMaster();
   delay.wet._param.value = 0.5;
-  var synth = new _tone2.default.FMSynth({ oscillator: { type: "sine" } }).connect(delay);
+  var synth = new _tone2.default.Synth({ oscillator: { type: "sine" } }).connect(delay);
+
+  var c = document.getElementById("feedback");
+  var ctx = c.getContext("2d");
+
+  // Create gradient
+  var grd = ctx.createLinearGradient(0, 0, 95, 0);
+  grd.addColorStop(0, "#FF00CC");
+  grd.addColorStop(1, "#24BEE5");
 
   nx.onload = function () {
 
+    feedback.val.value = 0.5;
     feedback.on('value', function (value) {
       delay.feedback.overridden = true;
       delay.feedback._param.value = value;
     });
+
+    feedback.colors.accent = grd;
+    delayTime.colors.accent = grd;
 
     delayTime.on('value', function (value) {
       delay.delayTime.overridden = true;
@@ -22554,7 +22567,6 @@ document.addEventListener("DOMContentLoaded", function () {
     keyboard.on('*', function (data) {
       if (data.on !== 0) {
         synth.triggerAttackRelease(_constants.NOTES[data.note - 48], "8n");
-        console.log(_constants.NOTES[data.note - 48], data);
       }
     });
   };
@@ -22566,52 +22578,51 @@ document.addEventListener("DOMContentLoaded", function () {
     keyboard.toggle(keyboard.keys[_constants.KEY_OBJ[e.keyCode].key]);
   };
 
-  // var canvas2 = document.getElementById("wave");
-  // var canvasCtx2 = canvas2.getContext("2d");
-  // canvas2.width = 800;
-  // canvas2.height = 250;
-  //
-  // function draw2() {
-  //   requestAnimationFrame(draw2);
-  //   let waveData = waveform.analyse();
-  //
-  //
-  //   let WIDTH = canvas2.width;
-  //   let HEIGHT = canvas2.height;
-  //   canvasCtx2.fillStyle = 'rgb(56,181,75)';
-  //   canvasCtx2.fillRect(0, 0, WIDTH, HEIGHT);
-  //
-  //   canvasCtx2.lineWidth = 2;
-  //   canvasCtx2.strokeStyle = 'rgb(233,34,101)';
-  //
-  //   canvasCtx2.beginPath();
-  //
-  //   var sliceWidth = WIDTH  / waveData.length;
-  //   var x = 0;
-  //
-  //   for(var i = 0; i < waveData.length; i++) {
-  //     var v = waveData[i] / 128;
-  //     var y = v * HEIGHT/2;
-  //
-  //     if(i === 0) {
-  //       canvasCtx2.moveTo(x, y);
-  //     } else {
-  //       canvasCtx2.lineTo(x, y);
-  //     }
-  //
-  //     x += sliceWidth;
-  //   }
-  //
-  //   canvasCtx2.lineTo(canvas2.width, canvas2.height/2);
-  //   canvasCtx2.stroke();
-  // }
-  //
-  // draw2();
+  var player = new _tone2.default.Player({
+    "url": "audio/Frogs.mp3"
+  }).fan(_waveformparticles.waveform).toMaster();
 
+  // document.querySelectorAll('button').forEach(function(button){
+  // 	button.addEventListener('mousedown', function(e){
+  // 		player.start();
+  // 	});
+  //   });
+
+
+  // playButton.addEventListener('mousedown', function (e) {
+  //   if (player.state === 'stopped') {
+  //     player.start();
+  //     playButton.replaceChild(document.getElementById('play'));
+  //   }
+  // });
+
+  var playButton = document.getElementById('play-button');
+  var stop = document.getElementById('stop');
+  var play = document.getElementById('play');
+  playButton.removeChild(stop);
+
+  playButton.addEventListener('mousedown', function (e) {
+    if (player.state === 'stopped') {
+      player.start();
+      playButton.removeChild(play);
+      playButton.appendChild(stop);
+    } else if (player.state === 'started') {
+      player.stop();
+      playButton.removeChild(stop);
+      playButton.appendChild(play);
+    }
+  });
 
   (0, _waveformparticles.init)();
   (0, _waveformparticles.animate)();
 });
+
+//  var buffer = new Tone.Buffer("audio/toro.mp3", function(){
+//   	//the buffer is now available.
+//   	const buff = buffer.get();
+//     console.log(buff);
+//   });
+
 // import {init, animate, waveform} from './waveform3d.js';
 
 /***/ }),
@@ -22697,8 +22708,7 @@ var KEY_OBJ = exports.KEY_OBJ = {
 };
 
 /***/ }),
-/* 4 */,
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22717,9 +22727,9 @@ var _tone2 = _interopRequireDefault(_tone);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SEPARATION = 10,
-    AMOUNTX = 100,
-    AMOUNTY = 100;
+var SEPARATION = 5,
+    AMOUNTX = 64,
+    AMOUNTY = 64;
 var container, stats;
 var camera, scene, renderer;
 var particles,
@@ -22733,17 +22743,17 @@ var waveform = exports.waveform = new _tone2.default.Analyser('waveform', 4096);
 // init();
 // animate();
 function init() {
-	container = document.createElement('div');
-	document.body.appendChild(container);
+	// container = document.createElement( 'div' );
+	// document.body.appendChild( container );
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-	camera.position.z = 500;
-	// camera.position.y = 180;
-	// camera.position.x = -450;
+	camera.position.z = 250;
+	camera.position.y = 100;
+	camera.position.x = -250;
 	scene = new THREE.Scene();
 	particles = [];
 	var PI2 = Math.PI * 2;
 	var material = new THREE.SpriteCanvasMaterial({
-		color: 0xffffff,
+
 		program: function program(context) {
 			context.beginPath();
 			context.arc(0, 0, 0.5, 0, PI2, true);
@@ -22761,7 +22771,7 @@ function init() {
 	}
 	renderer = new THREE.CanvasRenderer();
 	renderer.setPixelRatio(window.devicePixelRatio);
-	renderer.setSize(800, 800);
+	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 	// stats = new Stats();
 	// container.appendChild( stats.dom );
@@ -22804,23 +22814,30 @@ function animate() {
 	// stats.update();
 }
 function render() {
-	camera.position.x += (mouseX - camera.position.x) * 0.05;
-	camera.position.y += (-mouseY - camera.position.y) * 0.05;
+	// camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+	// camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
 	camera.lookAt(scene.position);
 	// console.log(camera.position);
 
 	var array = waveform.analyse();
 	var i = 0;
-	for (var ix = 0; ix < 100; ix++) {
-		for (var iy = 0; iy < 100; iy++) {
+	for (var ix = 0; ix < AMOUNTX; ix++) {
+		for (var iy = 0; iy < AMOUNTY; iy++) {
 			particle = particles[i];
 			particle.position.y = array[i] - 128;
+			particle.scale.x = particle.scale.y = 2;
+			if ((array[i] - 128) % 2 === 0) {
+				particle.material.color.r = array[i] - 127;
+			} else if ((array[i] - 128) % 3 === 0) {
+				particle.material.color.g = array[i] - 127;
+			}
+			// debugger
 			i++;
+			// debugger
 			//
 			// // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
 			// // 	( Math.sin( ( iy + count ) * 0.5 ) * 50 );
 			// particle.position.y = array[iy];
-			// particle.scale.x = particle.scale.y = 10;
 		}
 	}
 	renderer.render(scene, camera);

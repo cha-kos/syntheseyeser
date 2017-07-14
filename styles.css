@@ -1,0 +1,14 @@
+.component-wrap{
+  position: absolute;
+}
+
+.play-button{
+  background: transparent;
+  color: white;
+  outline: none;
+  border: none;
+}
+
+.dial{
+  color: white;
+}
