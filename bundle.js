@@ -22514,6 +22514,11 @@ var __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory){
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.viewing = undefined;
+
 var _arp = __webpack_require__(2);
 
 var Arp = _interopRequireWildcard(_arp);
@@ -22531,19 +22536,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 // Arp.start();
+var viewing = exports.viewing = false;
+// import {init, animate, waveform} from './waveform3d.js';
+
 
 document.addEventListener("DOMContentLoaded", function () {
 
   var fft = new _tone2.default.Analyser('fft', 32);
-  // var waveform = new Tone.Analyser('waveform', 4096);
-  var delay = new _tone2.default.FeedbackDelay(0, 0).fan(_waveformparticles.waveform, fft).toMaster();
+  var delay = new _tone2.default.FeedbackDelay(0.5, 0.5).fan(_waveformparticles.waveform, fft).toMaster();
   delay.wet._param.value = 0.5;
-  var synth = new _tone2.default.Synth({ oscillator: { type: "sine" } }).connect(delay);
+  var synth = new _tone2.default.Synth().connect(delay);
 
   var c = document.getElementById("feedback");
   var ctx = c.getContext("2d");
 
-  // Create gradient
   var grd = ctx.createLinearGradient(0, 0, 95, 0);
   grd.addColorStop(0, "#FF00CC");
   grd.addColorStop(1, "#24BEE5");
@@ -22553,12 +22559,19 @@ document.addEventListener("DOMContentLoaded", function () {
     keyboard.init();
 
     feedback.val.value = 0.5;
+    feedback.colors.accent = grd;
+    feedback.init();
+
+    delayTime.val.value = 0.5;
+    delayTime.colors.accent = grd;
+    delayTime.fontColor = 'white';
+    delayTime.init();
+
     feedback.on('value', function (value) {
       delay.feedback.overridden = true;
       delay.feedback._param.value = value;
     });
 
-    feedback.colors.accent = grd;
     delayTime.colors.accent = grd;
 
     delayTime.on('value', function (value) {
@@ -22570,17 +22583,22 @@ document.addEventListener("DOMContentLoaded", function () {
         synth.triggerAttackRelease(_notes.NOTES[data.note - 48], "8n");
       }
     });
+    synthView.style.display = 'none';
   };
 
   document.onkeydown = function (e) {
-    keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
+    if (_notes.KEY_OBJ[e.keyCode]) {
+      keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
+    }
   };
   document.onkeyup = function (e) {
-    keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
+    if (_notes.KEY_OBJ[e.keyCode]) {
+      keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
+    }
   };
 
   var player = new _tone2.default.Player({
-    "url": "audio/Underwaterfall.m4a"
+    "url": "audio/Drowning.mp3"
   }).fan(_waveformparticles.waveform).toMaster();
 
   var playButton = document.getElementById('play-button');
@@ -22600,7 +22618,57 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Get the modal
+  var viewButton = document.getElementById('view');
+  var viewOn = document.getElementById('view-on');
+  var viewOff = document.getElementById('view-off');
+  viewButton.removeChild(viewOff);
+
+  viewButton.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    if (viewing === false) {
+      exports.viewing = viewing = true;
+      viewButton.removeChild(viewOn);
+      viewButton.appendChild(viewOff);
+    } else {
+      exports.viewing = viewing = false;
+      viewButton.removeChild(viewOff);
+      viewButton.appendChild(viewOn);
+      (0, _waveformparticles.resetCamera)();
+    }
+  });
+
+  var synthDiv = document.getElementById('synth-div');
+  var synthViewButton = document.getElementById('synth-view-button');
+  var synthView = document.getElementById('synth-view');
+  var synthViewClose = document.getElementById('synth-view-close');
+
+  synthViewButton.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    synthDiv.removeChild(synthViewButton);
+    synthView.style.display = 'block';
+  });
+
+  synthViewClose.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    synthView.style.display = 'none';
+    synthDiv.appendChild(synthViewButton);
+  });
+
+  document.addEventListener('wheel', function (e) {
+    if (viewing === true) {
+      if (e.deltaY < 0) {
+        (0, _waveformparticles.zoomCamera)(-100);
+      } else if (e.deltaY > 0) {
+        (0, _waveformparticles.zoomCamera)(100);
+      }
+    }
+  });
+
+  // var view = document.getElementById('view');
+  //   view.addEventListener('on', function (e) {
+  //     console.log(e);
+  //   }
+  // );
   var welcomeModal = document.getElementById('welcomeModal');
   var span = document.getElementsByClassName("close")[0];
   welcomeModal.style.display = "block";
@@ -22613,10 +22681,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
+  var infoButton = document.getElementById('info-button');
+  infoButton.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    welcomeModal.style.display = 'block';
+  });
+
   (0, _waveformparticles.init)();
   (0, _waveformparticles.animate)();
 });
-// import {init, animate, waveform} from './waveform3d.js';
 
 /***/ }),
 /* 2 */
@@ -22676,7 +22749,7 @@ Object.defineProperty(exports, "__esModule", {
 //   'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
 //   'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'
 //   ];
-var NOTES = exports.NOTES = ['C1', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'];
+var NOTES = exports.NOTES = ['C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'];
 
 var KEY_OBJ = exports.KEY_OBJ = {
   65: {
@@ -22698,6 +22771,39 @@ var KEY_OBJ = exports.KEY_OBJ = {
   },
   70: {
     key: 5
+  },
+  84: {
+    key: 6
+  },
+  71: {
+    key: 7
+  },
+  89: {
+    key: 8
+  },
+  72: {
+    key: 9
+  },
+  85: {
+    key: 10
+  },
+  74: {
+    key: 11
+  },
+  75: {
+    key: 12
+  },
+  79: {
+    key: 13
+  },
+  76: {
+    key: 14
+  },
+  80: {
+    key: 15
+  },
+  186: {
+    key: 16
   }
 };
 
@@ -22714,6 +22820,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.waveform = undefined;
 exports.init = init;
 exports.animate = animate;
+exports.resetCamera = resetCamera;
+exports.zoomCamera = zoomCamera;
+
+var _entry = __webpack_require__(1);
 
 var _tone = __webpack_require__(0);
 
@@ -22734,13 +22844,11 @@ var mouseX = 0,
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 var waveform = exports.waveform = new _tone2.default.Analyser('waveform', 128);
-// init();
-// animate();
+
 function init() {
-	// container = document.createElement( 'div' );
-	// document.body.appendChild( container );
+
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-	camera.position.z = 50;
+	camera.position.z = 75;
 	camera.position.y = 120;
 	camera.position.x = -500;
 	scene = new THREE.Scene();
@@ -22763,18 +22871,18 @@ function init() {
 			scene.add(particle);
 		}
 	}
+
 	renderer = new THREE.CanvasRenderer();
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.domElement.className = 'visual';
 	document.body.appendChild(renderer.domElement);
-	// stats = new Stats();
-	// container.appendChild( stats.dom );
 	document.addEventListener('mousemove', onDocumentMouseMove, false);
 	document.addEventListener('touchstart', onDocumentTouchStart, false);
 	document.addEventListener('touchmove', onDocumentTouchMove, false);
-	//
 	window.addEventListener('resize', onWindowResize, false);
 }
+
 function onWindowResize() {
 	windowHalfX = window.innerWidth / 2;
 	windowHalfY = window.innerHeight / 2;
@@ -22787,6 +22895,7 @@ function onDocumentMouseMove(event) {
 	mouseX = event.clientX - windowHalfX;
 	mouseY = event.clientY - windowHalfY;
 }
+
 function onDocumentTouchStart(event) {
 	if (event.touches.length === 1) {
 		event.preventDefault();
@@ -22794,6 +22903,7 @@ function onDocumentTouchStart(event) {
 		mouseY = event.touches[0].pageY - windowHalfY;
 	}
 }
+
 function onDocumentTouchMove(event) {
 	if (event.touches.length === 1) {
 		event.preventDefault();
@@ -22801,17 +22911,28 @@ function onDocumentTouchMove(event) {
 		mouseY = event.touches[0].pageY - windowHalfY;
 	}
 }
-//
+
 function animate() {
 	requestAnimationFrame(animate);
 	render();
-	// stats.update();
 }
+
+function resetCamera() {
+	camera.position.z = 75;
+	camera.position.y = 120;
+	camera.position.x = -500;
+}
+
+function zoomCamera(num) {
+	camera.position.z += num;
+}
+
 function render() {
-	// camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-	// camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+	if (_entry.viewing === true) {
+		camera.position.x += (mouseX - camera.position.x) * 0.05;
+		camera.position.y += (-mouseY - camera.position.y) * 0.05;
+	}
 	camera.lookAt(scene.position);
-	// console.log(camera.position);
 
 	var array = waveform.analyse();
 	var i = 0;
@@ -22819,29 +22940,28 @@ function render() {
 	for (var ix = 0; ix < AMOUNTX; ix++) {
 		for (var iy = 0; iy < AMOUNTY; iy++) {
 			particle = particles[i];
-			particle.position.y = (array[j] - 128) * 2;
+			particle.position.y = (array[j] - 128) * 1.5;
 			particle.scale.x = particle.scale.y = 3;
 			if ((array[j] - 128) % 2 === 0) {
 				particle.material.color.r = array[j] - 127;
 			} else if ((array[j] - 128) % 3 === 0) {
 				particle.material.color.g = array[j] - 127;
 			}
-			// debugger
 			i++;
 			j++;
 			if (j === 128) {
 				j = 0;
 			}
-			// debugger
-			//
-			// // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
-			// // 	( Math.sin( ( iy + count ) * 0.5 ) * 50 );
-			// particle.position.y = array[iy];
 		}
 	}
+
 	renderer.render(scene, camera);
-	count += 0.1;
 }
+
+// count += 0.1;
+// // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
+// // 	( Math.sin( ( iy + count ) * 0.5 ) * 50 );
+// particle.position.y = array[iy];
 
 /***/ })
 /******/ ]);

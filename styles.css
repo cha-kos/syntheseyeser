@@ -1,23 +1,86 @@
+
+body{
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1{
+  padding-left: 25px;
+  font-family: 'Monoton', cursive;
+  font-size: 50px;
+}
+
+a{
+  text-decoration: none;
+  padding: 10px;
+}
+
 .component-wrap{
   position: absolute;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-
+.info-button{
+  background: transparent;
+  position: fixed;
+  left: 20px;
+  cursor: pointer;
+  margin-left: 2px;
+  padding: 40px;
+  padding-top: 33px;
+  border: none;
+  outline: none;
+}
 .play-button{
   background: transparent;
   color: white;
   outline: none;
   border: none;
   margin-right: 40px;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  padding: 40px;
+  position: fixed;
+  right: 20px;
 }
 
-.synth{
+.play-button.view{
+  bottom: 20px;
+}
+
+.synth-view-button{
+  background: transparent;
+  outline: none;
+  border: none;
+  position: fixed;
+  margin-left: 40px;
+  left: 20px;
+  bottom: 30px;
+  cursor: pointer;
+}
+
+.synth-container{
   display: flex;
   flex-direction: column;
   margin-left: 40px;
+  bottom: 0px;
+  /*left: 10%;*/
+  position: fixed;
+  bottom: 20px;
+  transition: all 1s ease;
+}
+
+.synth-view{
+  transition: all 1s ease;
+  text-align: center;
+}
+
+.synth-view-close{
+  padding-bottom: 20px;
+  cursor: pointer;
 }
 
 .delay{
@@ -28,31 +91,45 @@
 }
 
 .dial{
+  display: flex;
+  flex-direction: column;
   color: white;
+  margin-left: 20px;
+}
+
+.dial div{
+  margin-top: 10px;
+  text-align: center;
+  font-weight: lighter;
 }
 
 
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    z-index: 1000; /* Sit on top */
+    top: 10%
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(255,255,255,0.2);
+    text-align: center;
 }
 
 /* Modal Content */
 .modal-content {
-    background-color: #fefefe;
+    position: fixed;
+    top: 10%;
+    left: 20%;
+    background-color: rgba(255, 255, 255, 0.9);
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    width: 60%;
+    color: black;
+    border-radius: 5px;
 }
 
 /* The Close Button */
@@ -68,4 +145,36 @@
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+.guide-logo{
+  padding-right: 20px;
+}
+
+.warning-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.warning-text{
+  font-size: 14;
+  padding-top: 10;
+}
+
+.about-div{
+  padding-top: 30px;
+}
+
+.about-text{
+  font-size: 12;
+  padding-bottom: 10px;
+}
+
+li {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-left: 32%;
+  padding-bottom: 10px;
 }

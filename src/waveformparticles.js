@@ -1,4 +1,4 @@
-
+    import { viewing } from './entry';
     import Tone from 'tone';
 
       var SEPARATION = 10, AMOUNTX = 32, AMOUNTY = 128;
@@ -9,13 +9,12 @@
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
       export const waveform = new Tone.Analyser('waveform', 128);
-			// init();
-			// animate();
+
+
 			export function init() {
-				// container = document.createElement( 'div' );
-				// document.body.appendChild( container );
+
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.z = 50;
+				camera.position.z = 75;
         camera.position.y = 120;
         camera.position.x = -500;
 				scene = new THREE.Scene();
@@ -38,18 +37,18 @@
 						scene.add( particle );
 					}
 				}
+
 				renderer = new THREE.CanvasRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.domElement.className = 'visual';
 				document.body.appendChild( renderer.domElement );
-				// stats = new Stats();
-				// container.appendChild( stats.dom );
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
 				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
-				//
 				window.addEventListener( 'resize', onWindowResize, false );
 			}
+
 			function onWindowResize() {
 				windowHalfX = window.innerWidth / 2;
 				windowHalfY = window.innerHeight / 2;
@@ -62,6 +61,7 @@
 				mouseX = event.clientX - windowHalfX;
 				mouseY = event.clientY - windowHalfY;
 			}
+
 			function onDocumentTouchStart( event ) {
 				if ( event.touches.length === 1 ) {
 					event.preventDefault();
@@ -69,6 +69,7 @@
 					mouseY = event.touches[ 0 ].pageY - windowHalfY;
 				}
 			}
+
 			function onDocumentTouchMove( event ) {
 				if ( event.touches.length === 1 ) {
 					event.preventDefault();
@@ -76,17 +77,28 @@
 					mouseY = event.touches[ 0 ].pageY - windowHalfY;
 				}
 			}
-			//
+
 			export function animate() {
 				requestAnimationFrame( animate );
 				render();
-				// stats.update();
 			}
+
+      export function resetCamera(){
+        camera.position.z = 75;
+        camera.position.y = 120;
+        camera.position.x = -500;
+      }
+
+      export function zoomCamera(num){
+        camera.position.z += num;
+      }
+
 			function render() {
-				// camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-				// camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+        if(viewing === true){
+				camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+				camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+        }
 				camera.lookAt( scene.position );
-        // console.log(camera.position);
 
         var array = waveform.analyse();
 				var i = 0;
@@ -94,7 +106,7 @@
 				for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
 					for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
 						particle = particles[ i ];
-						particle.position.y = ((array[j] -128) * 2);
+						particle.position.y = (((array[j] -128) * 1.5));
             particle.scale.x = particle.scale.y = 3;
             if ( (array[j] - 128) % 2 === 0 ){
               particle.material.color.r = array[j] - 127;
@@ -102,19 +114,18 @@
             else if ( (array[j] - 128) % 3 === 0 ){
               particle.material.color.g = array[j] - 127;
             }
-            // debugger
             i++;
             j++;
             if ( j === 128 ){
               j = 0;
             }
-            // debugger
-            //
-            // // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
-						// // 	( Math.sin( ( iy + count ) * 0.5 ) * 50 );
-            // particle.position.y = array[iy];
 					}
 				}
+
 				renderer.render( scene, camera );
-				count += 0.1;
 			}
+
+      // count += 0.1;
+      // // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
+      // // 	( Math.sin( ( iy + count ) * 0.5 ) * 50 );
+      // particle.position.y = array[iy];
