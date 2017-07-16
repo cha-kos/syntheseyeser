@@ -19,13 +19,30 @@
     </head>
     <body>
 
+      <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h1>SYNTHESEYESER</h1>
+          <div>Syntheseyeser is a 3D soundwave visualization.</div>
+           <div> click the
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+             button to listen to the featured song </div>
+             <div> or click the Synth button to play with the build in synthesizer.</div>
+          <div> WARNING: This visualizer has flickering lights and can trigger symptoms of Photo Sensitive Epilepsy </div>
+        </div>
+
+      </div>
       <!-- <div id="dialog" title="Basic dialog">
         <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
       </div> -->
       <div class='component-wrap'>
-        <canvas nx='dial' id='feedback' label='Feedback' class='dial'></canvas>
-        <canvas nx='dial' id='delayTime' label='Time' class='dial'></canvas>
-        <canvas nx='keyboard' id='keyboard'></canvas>
+        <div class="synth">
+          <div class='delay'>
+            <canvas nx='dial' id='feedback' class='dial'></canvas>
+            <canvas nx='dial' id='delayTime' class='dial'></canvas>
+          </div>
+          <canvas nx='keyboard' id='keyboard'></canvas>
+        </div>
         <button class = 'play-button' id='play-button'>
           <svg id ='play' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           <svg id='stop' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>

@@ -22522,7 +22522,7 @@ var _tone = __webpack_require__(0);
 
 var _tone2 = _interopRequireDefault(_tone);
 
-var _constants = __webpack_require__(3);
+var _notes = __webpack_require__(3);
 
 var _waveformparticles = __webpack_require__(4);
 
@@ -22549,6 +22549,8 @@ document.addEventListener("DOMContentLoaded", function () {
   grd.addColorStop(1, "#24BEE5");
 
   nx.onload = function () {
+    keyboard.octaves = 1.43;
+    keyboard.init();
 
     feedback.val.value = 0.5;
     feedback.on('value', function (value) {
@@ -22563,38 +22565,23 @@ document.addEventListener("DOMContentLoaded", function () {
       delay.delayTime.overridden = true;
       delay.delayTime._param.value = value;
     });
-
     keyboard.on('*', function (data) {
       if (data.on !== 0) {
-        synth.triggerAttackRelease(_constants.NOTES[data.note - 48], "8n");
+        synth.triggerAttackRelease(_notes.NOTES[data.note - 48], "8n");
       }
     });
   };
 
   document.onkeydown = function (e) {
-    keyboard.toggle(keyboard.keys[_constants.KEY_OBJ[e.keyCode].key]);
+    keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
   };
   document.onkeyup = function (e) {
-    keyboard.toggle(keyboard.keys[_constants.KEY_OBJ[e.keyCode].key]);
+    keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
   };
 
   var player = new _tone2.default.Player({
-    "url": "audio/Frogs.mp3"
+    "url": "audio/Underwaterfall.m4a"
   }).fan(_waveformparticles.waveform).toMaster();
-
-  // document.querySelectorAll('button').forEach(function(button){
-  // 	button.addEventListener('mousedown', function(e){
-  // 		player.start();
-  // 	});
-  //   });
-
-
-  // playButton.addEventListener('mousedown', function (e) {
-  //   if (player.state === 'stopped') {
-  //     player.start();
-  //     playButton.replaceChild(document.getElementById('play'));
-  //   }
-  // });
 
   var playButton = document.getElementById('play-button');
   var stop = document.getElementById('stop');
@@ -22613,16 +22600,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Get the modal
+  var welcomeModal = document.getElementById('welcomeModal');
+  var span = document.getElementsByClassName("close")[0];
+  welcomeModal.style.display = "block";
+  span.onclick = function () {
+    welcomeModal.style.display = "none";
+  };
+  window.onclick = function (event) {
+    if (event.target == welcomeModal) {
+      welcomeModal.style.display = "none";
+    }
+  };
+
   (0, _waveformparticles.init)();
   (0, _waveformparticles.animate)();
 });
-
-//  var buffer = new Tone.Buffer("audio/toro.mp3", function(){
-//   	//the buffer is now available.
-//   	const buff = buffer.get();
-//     console.log(buff);
-//   });
-
 // import {init, animate, waveform} from './waveform3d.js';
 
 /***/ }),
@@ -22678,31 +22671,32 @@ var start = exports.start = function start() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var NOTES = exports.NOTES = ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3', 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'];
+// export const NOTES = [
+//   'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
+//   'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
+//   'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'
+//   ];
+var NOTES = exports.NOTES = ['C1', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'];
 
 var KEY_OBJ = exports.KEY_OBJ = {
   65: {
-    note: 'C3',
     key: 0
   },
   87: {
-    note: 'C#3',
     key: 1
   },
   83: {
-    note: 'D3',
     key: 2
   },
   69: {
-    note: 'D#3',
+
     key: 3
   },
   68: {
-    note: 'E3',
+
     key: 4
   },
   70: {
-    note: 'F3',
     key: 5
   }
 };
@@ -22727,9 +22721,9 @@ var _tone2 = _interopRequireDefault(_tone);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SEPARATION = 5,
-    AMOUNTX = 64,
-    AMOUNTY = 64;
+var SEPARATION = 10,
+    AMOUNTX = 32,
+    AMOUNTY = 128;
 var container, stats;
 var camera, scene, renderer;
 var particles,
@@ -22739,16 +22733,16 @@ var mouseX = 0,
     mouseY = 0;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
-var waveform = exports.waveform = new _tone2.default.Analyser('waveform', 4096);
+var waveform = exports.waveform = new _tone2.default.Analyser('waveform', 128);
 // init();
 // animate();
 function init() {
 	// container = document.createElement( 'div' );
 	// document.body.appendChild( container );
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-	camera.position.z = 250;
-	camera.position.y = 100;
-	camera.position.x = -250;
+	camera.position.z = 50;
+	camera.position.y = 120;
+	camera.position.x = -500;
 	scene = new THREE.Scene();
 	particles = [];
 	var PI2 = Math.PI * 2;
@@ -22821,18 +22815,23 @@ function render() {
 
 	var array = waveform.analyse();
 	var i = 0;
+	var j = 0;
 	for (var ix = 0; ix < AMOUNTX; ix++) {
 		for (var iy = 0; iy < AMOUNTY; iy++) {
 			particle = particles[i];
-			particle.position.y = array[i] - 128;
-			particle.scale.x = particle.scale.y = 2;
-			if ((array[i] - 128) % 2 === 0) {
-				particle.material.color.r = array[i] - 127;
-			} else if ((array[i] - 128) % 3 === 0) {
-				particle.material.color.g = array[i] - 127;
+			particle.position.y = (array[j] - 128) * 2;
+			particle.scale.x = particle.scale.y = 3;
+			if ((array[j] - 128) % 2 === 0) {
+				particle.material.color.r = array[j] - 127;
+			} else if ((array[j] - 128) % 3 === 0) {
+				particle.material.color.g = array[j] - 127;
 			}
 			// debugger
 			i++;
+			j++;
+			if (j === 128) {
+				j = 0;
+			}
 			// debugger
 			//
 			// // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
