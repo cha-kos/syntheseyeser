@@ -118,6 +118,16 @@ a{
   transition: all 1s ease;
 }
 
+.synth-holder-div{
+	display: flex;
+	flex-direction: row;
+}
+
+.close-synth-help{
+	cursor: pointer;
+	margin-left: 20px;
+}
+
 .synth-view{
   transition: all 1s ease;
   text-align: center;

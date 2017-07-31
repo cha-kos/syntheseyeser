@@ -106,7 +106,7 @@
 				for ( var ix = 0; ix < AMOUNTX; ix ++ ) {
 					for ( var iy = 0; iy < AMOUNTY; iy ++ ) {
 						particle = particles[ i ];
-						particle.position.y = (((array[j] -128) * 1.5));
+						particle.position.y = (((array[j] -128) * 1.5 ));
             particle.scale.x = particle.scale.y = 3;
             if ( (array[j] - 128) % 2 === 0 ){
               particle.material.color.r = array[j] - 127;

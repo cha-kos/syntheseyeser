@@ -22598,7 +22598,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   var player = new _tone2.default.Player({
-    "url": "audio/Drowning.mp3"
+    "url": "audio/RunninAround.wav"
   }).fan(_waveformparticles.waveform).toMaster();
 
   var playButton = document.getElementById('play-button');
@@ -22685,6 +22685,22 @@ document.addEventListener("DOMContentLoaded", function () {
   infoButton.addEventListener('mousedown', function (e) {
     e.preventDefault();
     welcomeModal.style.display = 'block';
+  });
+
+  var synthHelpButton = document.getElementById('synth-help-button');
+  var synthHelpView = document.getElementById('synth-help');
+  var closeSynthHelp = document.getElementById('close-synth-help');
+
+  synthHelpView.style.display = "none";
+
+  synthHelpButton.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    synthHelpView.style.display = "block";
+  });
+
+  closeSynthHelp.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    synthHelpView.style.display = "none";
   });
 
   (0, _waveformparticles.init)();

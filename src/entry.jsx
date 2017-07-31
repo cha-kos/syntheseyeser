@@ -166,6 +166,22 @@ document.addEventListener("DOMContentLoaded", () => {
             welcomeModal.style.display = 'block';
           });
 
+        var synthHelpButton = document.getElementById('synth-help-button');
+        var synthHelpView = document.getElementById('synth-help');
+        var closeSynthHelp = document.getElementById('close-synth-help');
+
+        synthHelpView.style.display = "none";
+
+        synthHelpButton.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          synthHelpView.style.display = "block";
+        });
+
+        closeSynthHelp.addEventListener('mousedown', function(e){
+          e.preventDefault();
+          synthHelpView.style.display = "none";
+        });
+
     init();
     animate();
   });
