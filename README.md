@@ -16,4 +16,9 @@ The waveform colors are manipulated based on the decibel values given in the arr
 ### Synth
 
 A basic polyphonic synthesizer is built in with a triangular waveform oscillator. The synth can be played by clicking on the keys displayed on the keyboard, or by pressing keyboard keys. The keyboard keys are mapped exactly the same as a standard Digital Audio Workstation (pictured below).
-!!![keymap](https://github.com/chrishakos/Syntheseyes/blob/master/keymap.png)
+![keymap](https://github.com/chrishakos/Syntheseyes/blob/master/keymap.png)
+
+
+### View Control
+
+The view control feature allows the user to control the Three.js camera position. While the view control is active, the X and Y position of the camera is controlled by the current location of the user's mouse, and the Z position is controlled by the user's scroll creating a zoom effect. 
