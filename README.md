@@ -1,6 +1,6 @@
 ## Syntheseyeser
 
-Syntheseyeser is a 3D soundwave visualizer accompanied with a basic web based synthesizer and music player. It is written in Javascript using [Three.js](https://github.com/mrdoob/three.js) for 3D rendering and [Tone.js](https://github.com/Tonejs/Tone.js/) to create the built in synthesizer and music player.
+Syntheseyeser is an interactive 3D soundwave visualizer accompanied with a basic web based synthesizer and music player. It is written in Javascript using [Three.js](https://github.com/mrdoob/three.js) for 3D rendering and [Tone.js](https://github.com/Tonejs/Tone.js/) to create the built in synthesizer and music player.
 
 ![syntheseyeser](https://github.com/chrishakos/Syntheseyes/blob/master/syntheseyeser.jpg)
 
@@ -21,4 +21,8 @@ A basic polyphonic synthesizer is built in with a triangular waveform oscillator
 
 ### View Control
 
-The view control feature allows the user to control the Three.js camera position. While the view control is active, the X and Y position of the camera is controlled by the current location of the user's mouse, and the Z position is controlled by the user's scroll creating a zoom effect. 
+The view control feature allows the user to control the Three.js camera position. While the view control is active, the X and Y position of the camera is controlled by the current location of the user's mouse, and the Z position is controlled by the user's scroll creating a zoom effect.
+
+### Music Player
+
+To illustrate the full ability of the 3D visualizer, a music player was added. Upon click of the "play" button, the featured song , "Drowning In You" by Pascäal begins playing. This song was chosen for its dynamic nature of short silences throughout the song.
