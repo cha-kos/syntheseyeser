@@ -95,8 +95,8 @@
 
 			function render() {
         if(viewing === true){
-				camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-				camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+  				camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+  				camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
         }
 				camera.lookAt( scene.position );
 
@@ -124,8 +124,3 @@
 
 				renderer.render( scene, camera );
 			}
-
-      // count += 0.1;
-      // // ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
-      // // 	( Math.sin( ( iy + count ) * 0.5 ) * 50 );
-      // particle.position.y = array[iy];

@@ -14,13 +14,8 @@
         <script src="./scripts/Protector.js"></script>
         <script src="./scripts/CanvasRenderer.js"></script>
         <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
-        <script type="text/javascript" src="bundle.js" charset="utf-8">
-          </script>
-        <link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Cinzel+Decorative" rel="stylesheet">
+        <script type="text/javascript" src="bundle.js" charset="utf-8"></script>
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Play" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Jura" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
     </head>
     <body>
@@ -62,9 +57,7 @@
         </div>
 
       </div>
-      <!-- <div id="dialog" title="Basic dialog">
-        <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
-      </div> -->
+
       <div class='component-wrap'>
         <button class='info-button' id='info-button'>
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="8"></line></svg>
@@ -94,11 +87,20 @@
             </div>
             <canvas nx='keyboard' id='keyboard'></canvas>
           </div>
-          <div class='delay-text' id='synth-help'>This is help
+          <div class='synth-help' id='synth-help'>
             <svg class='close-synth-help' id='close-synth-help' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"/>
               <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
+            </svg>
+            <div>Synth Help</div>
+            <div> The synth can be played by clicking the piano pictured, or using your computer keyboard.
+              Keyboard letters respond to the piano as follows</div>
+            <img class='keymap' src='keymap.png'/>
+            <div> Delay Help </div>
+            <div> An audio delay creates an echo effect.
+              The Time knob adjusts the time of which you hear the echo after the sound is played.
+              The Feedback knob adjusts how much of the echo you hear. i.e. Feedback value of 1 will produce a never ending echo</div>
+
         </div>
         </div>
         </div>
