@@ -16,7 +16,7 @@ The waveform colors are manipulated based on the decibel values given in the arr
 ### Synth
 
 A basic polyphonic synthesizer is built in with a triangular waveform oscillator. The synth can be played by clicking on the keys displayed on the keyboard, or by pressing your computer keyboard keys. Your computer keyboard keys are mapped exactly the same as a standard Digital Audio Workstation (illustrated below).
-![keymap](https://github.com/chrishakos/Syntheseyes/blob/master/keymap. | width = 500)
+![keymap](https://github.com/chrishakos/Syntheseyes/blob/master/keymap.png | width=50)
 
 
 ### View Control
