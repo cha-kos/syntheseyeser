@@ -22664,11 +22664,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // var view = document.getElementById('view');
-  //   view.addEventListener('on', function (e) {
-  //     console.log(e);
-  //   }
-  // );
   var welcomeModal = document.getElementById('welcomeModal');
   var span = document.getElementsByClassName("close")[0];
   welcomeModal.style.display = "block";
@@ -22695,7 +22690,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   synthHelpButton.addEventListener('mousedown', function (e) {
     e.preventDefault();
-    synthHelpView.style.display = "block";
+    synthHelpView.style.display = "flex";
   });
 
   closeSynthHelp.addEventListener('mousedown', function (e) {

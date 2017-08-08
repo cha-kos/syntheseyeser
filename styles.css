@@ -123,7 +123,6 @@ a{
 }
 
 
-
 .synth-view{
   transition: all 1s ease;
   text-align: center;
@@ -132,7 +131,18 @@ a{
 .synth-view-close{
   padding-bottom: 20px;
   cursor: pointer;
+	position: absolute;
 }
+
+.synth-help-button{
+	text-align: right;
+	cursor: pointer;
+}
+
+.fa-question{
+	color: white;
+}
+
 
 .delay{
   padding-top: 10px;
@@ -161,14 +171,29 @@ a{
 }
 
 .synth-help{
-	width: 600px;
+	display: flex;
+	flex-direction: row;
+	/*width: 600px;*/
 	color: white;
-	font-size: 18px;
+	font-size: 22px;
 }
 
+.synth-help-text{
+	width: 40%;
+	margin-left: 5%;
+}
+
+.help-title{
+	padding-bottom: 10px;
+}
+.help-text{
+	font-size: 16px;
+	font-weight: lighter;
+	padding-bottom: 5%;
+}
 .keymap{
 	height: 100px;
-	width: 500px;
+	width: 100%;
 }
 
 .close-synth-help{
