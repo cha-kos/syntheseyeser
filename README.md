@@ -15,8 +15,8 @@ The waveform colors are manipulated based on the decibel values given in the arr
 
 ### Synth
 
-A basic polyphonic synthesizer is built in with a triangular waveform oscillator. The synth can be played by clicking on the keys displayed on the keyboard, or by pressing keyboard keys. The keyboard keys are mapped exactly the same as a standard Digital Audio Workstation (pictured below).
-![keymap](https://github.com/chrishakos/Syntheseyes/blob/master/keymap.png)
+A basic polyphonic synthesizer is built in with a triangular waveform oscillator. The synth can be played by clicking on the keys displayed on the keyboard, or by pressing your computer keyboard keys. Your computer keyboard keys are mapped exactly the same as a standard Digital Audio Workstation (illustrated below).
+![keymap](https://github.com/chrishakos/Syntheseyes/blob/master/keymap. | width = 500)
 
 
 ### View Control
@@ -25,4 +25,4 @@ The view control feature allows the user to control the Three.js camera position
 
 ### Music Player
 
-To illustrate the full ability of the 3D visualizer, a music player was added. Upon click of the "play" button, the featured song , "Drowning In You" by Pascäal begins playing. This song was chosen for its dynamic nature of short silences throughout the song.
+To illustrate the full ability of the 3D visualizer, a music player was added. Upon clicking the "play" button, the featured song , "Drowning In You" by Pascäal begins playing. This song was chosen for its dynamic nature of short silences and isolated textured sounds.
