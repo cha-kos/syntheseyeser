@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       const playButton = document.getElementById('play-button');
+      const loading = document.getElementById('fountainTextG');
       const stop = document.getElementById('stop');
       const play = document.getElementById('play');
       playButton.removeChild(stop);
@@ -95,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       var player = new Tone.Player("audio/Drowning.mp3", () => {
+          playButton.removeChild(loading);
           playButton.appendChild(play);
         }
       ).fan(waveform).toMaster();
@@ -110,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
           viewing = true;
           viewButton.removeChild(viewOn);
           viewButton.appendChild(viewOff);
+          
         } else {
           viewing = false;
           viewButton.removeChild(viewOff);

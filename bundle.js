@@ -22598,6 +22598,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   var playButton = document.getElementById('play-button');
+  var loading = document.getElementById('fountainTextG');
   var stop = document.getElementById('stop');
   var play = document.getElementById('play');
   playButton.removeChild(stop);
@@ -22616,6 +22617,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   var player = new _tone2.default.Player("audio/Drowning.mp3", function () {
+    playButton.removeChild(loading);
     playButton.appendChild(play);
   }).fan(_waveformparticles.waveform).toMaster();
 
