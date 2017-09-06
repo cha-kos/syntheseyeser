@@ -22597,14 +22597,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  var player = new _tone2.default.Player({
-    "url": "audio/Drowning.mp3"
-  }).fan(_waveformparticles.waveform).toMaster();
-
   var playButton = document.getElementById('play-button');
   var stop = document.getElementById('stop');
   var play = document.getElementById('play');
   playButton.removeChild(stop);
+  playButton.removeChild(play);
 
   playButton.addEventListener('mousedown', function (e) {
     if (player.state === 'stopped') {
@@ -22617,6 +22614,10 @@ document.addEventListener("DOMContentLoaded", function () {
       playButton.appendChild(play);
     }
   });
+
+  var player = new _tone2.default.Player("audio/Drowning.mp3", function () {
+    playButton.appendChild(play);
+  }).fan(_waveformparticles.waveform).toMaster();
 
   var viewButton = document.getElementById('view');
   var viewOn = document.getElementById('view-on');

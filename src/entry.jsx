@@ -73,9 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-      var player = new Tone.Player({
-        "url": "audio/Drowning.mp3"
-      }).fan(waveform).toMaster();
 
 
 
@@ -83,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const stop = document.getElementById('stop');
       const play = document.getElementById('play');
       playButton.removeChild(stop);
+      playButton.removeChild(play);
 
       playButton.addEventListener('mousedown', function (e) {
         if (player.state === 'stopped') {
@@ -95,6 +93,11 @@ document.addEventListener("DOMContentLoaded", () => {
           playButton.appendChild(play);
         }
       });
+
+      var player = new Tone.Player("audio/Drowning.mp3", () => {
+          playButton.appendChild(play);
+        }
+      ).fan(waveform).toMaster();
 
       const viewButton = document.getElementById('view');
       const viewOn = document.getElementById('view-on');
