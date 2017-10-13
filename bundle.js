@@ -22597,29 +22597,130 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
+  var player = new _tone2.default.Player({}).fan(_waveformparticles.waveform).toMaster();
+
+  var trackIndex = 0;
+  var trackLoaded = false;
+
+  var trackOne = new _tone2.default.Buffer("audio/No one is looking at U (feat. Lorraine).mp3", function () {
+    player.buffer = tracks[trackIndex];
+    playNav.removeChild(loadingDisc);
+    playNav.appendChild(navButtons);
+    trackLoaded = true;
+  });
+
+  var trackTwo = new _tone2.default.Buffer("audio/Drowning.mp3");
+
+  var tracks = [trackOne, trackTwo];
+
+  var trackList = ["No one is looking at U (feat. Lorraine)", "Drowning In You"];
+
+  var artistList = ["Nicolas Jaar", "Pascaal"];
+
   var playButton = document.getElementById('play-button');
-  var loading = document.getElementById('fountainTextG');
   var stop = document.getElementById('stop');
   var play = document.getElementById('play');
+  var pause = document.getElementById('pause');
+  var skipForward = document.getElementById('skip-forward');
+  var skipBack = document.getElementById('skip-back');
+  var trackText = document.getElementById('track-text');
+  var trackArtist = document.getElementById('track-artist');
+  var playNav = document.getElementById('play-navigation');
+  var navButtons = document.getElementById('navigation-buttons');
+  var loadingDisc = document.getElementById('loading-disc');
+
+  trackText.innerHTML = trackList[trackIndex];
+  trackArtist.innerHTML = artistList[trackIndex];
   playButton.removeChild(stop);
-  playButton.removeChild(play);
+  playButton.removeChild(pause);
+  playNav.removeChild(navButtons);
+
+  var beginning = 0;
+  var end = 0;
+  var offset = 0;
+
+  var playTrack = function playTrack() {
+    player.buffer = tracks[trackIndex];
+    console.log(offset);
+    player.start(_tone2.default.Time().now(), offset * player.buffer._buffer.duration);
+    _tone2.default.Transport.start(_tone2.default.Time().now());
+  };
 
   playButton.addEventListener('mousedown', function (e) {
     if (player.state === 'stopped') {
-      player.start();
+      playTrack();
       playButton.removeChild(play);
-      playButton.appendChild(stop);
+      playButton.appendChild(pause);
     } else if (player.state === 'started') {
       player.stop();
-      playButton.removeChild(stop);
+      _tone2.default.Transport.pause();
+      offset = _tone2.default.Transport.seconds / player.buffer._buffer.duration;
+      playButton.removeChild(pause);
       playButton.appendChild(play);
     }
   });
 
-  var player = new _tone2.default.Player("audio/Drowning.mp3", function () {
-    playButton.removeChild(loading);
-    playButton.appendChild(play);
-  }).fan(_waveformparticles.waveform).toMaster();
+  skipForward.addEventListener('mousedown', function () {
+    _tone2.default.Transport.stop();
+    _tone2.default.Transport.seconds = 0;
+    trackIndex += 1;
+    if (trackIndex > trackList.length - 1) {
+      trackIndex = 0;
+    }
+    trackText.innerHTML = trackList[trackIndex];
+    trackArtist.innerHTML = artistList[trackIndex];
+    offset = 0;
+    if (player.state === "started") {
+      playTrack();
+      _tone2.default.Transport.start();
+    }
+  });
+
+  skipBack.addEventListener('mousedown', function () {
+    _tone2.default.Transport.stop();
+    _tone2.default.Transport.seconds = 0;
+    trackIndex -= 1;
+    if (trackIndex < 0) {
+      trackIndex = trackList.length - 1;
+    }
+    trackText.innerHTML = trackList[trackIndex];
+    trackArtist.innerHTML = artistList[trackIndex];
+    offset = 0;
+    if (player.state === "started") {
+      playTrack();
+    }
+  });
+
+  var trackSlide = document.getElementById("trackSlide");
+  var trackStatus = document.getElementById('trackStatus');
+
+  trackSlide.addEventListener('mousedown', function (e) {
+    console.log(e);
+    offset = (e.x - 1211) / 200;
+    trackStatus.style.width = '' + offset * 200;
+    if (player.state === "started") {
+      _tone2.default.Transport.stop();
+      _tone2.default.Transport.seconds = 0;
+      playTrack();
+    }
+  });
+
+  var trackSlideAnimate = function trackSlideAnimate() {
+    var time = offset + _tone2.default.Transport.seconds / player.buffer._buffer.duration;
+    trackStatus.style.width = '' + time * 200;
+    if (time * 200 >= 200) {
+      _tone2.default.Transport.stop();
+      _tone2.default.Transport.seconds = 0;
+      trackIndex += 1;
+      if (trackIndex > trackList.length - 1) {
+        trackIndex = 0;
+      }
+      trackText.innerHTML = trackList[trackIndex];
+      offset = 0;
+      playTrack();
+      _tone2.default.Transport.start();
+    }
+  };
 
   var viewButton = document.getElementById('view');
   var viewOn = document.getElementById('view-on');
@@ -22701,8 +22802,16 @@ document.addEventListener("DOMContentLoaded", function () {
     synthHelpView.style.display = "none";
   });
 
+  function animate() {
+    requestAnimationFrame(animate);
+    (0, _waveformparticles.render)();
+    if (trackLoaded === true) {
+      trackSlideAnimate();
+    }
+  }
+
   (0, _waveformparticles.init)();
-  (0, _waveformparticles.animate)();
+  animate();
 });
 
 /***/ }),
@@ -22836,6 +22945,7 @@ exports.init = init;
 exports.animate = animate;
 exports.resetCamera = resetCamera;
 exports.zoomCamera = zoomCamera;
+exports.render = render;
 
 var _entry = __webpack_require__(1);
 
@@ -22862,6 +22972,9 @@ var waveform = exports.waveform = new _tone2.default.Analyser('waveform', 128);
 function init() {
 
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+	// camera.position.z = -25;
+	// camera.position.y = 500;
+	// camera.position.x = 0;
 	camera.position.z = 75;
 	camera.position.y = 120;
 	camera.position.x = -500;

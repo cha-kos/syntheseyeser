@@ -6,7 +6,8 @@ import {init,
         animate,
         waveform,
         resetCamera,
-        zoomCamera} from './waveformparticles.js';
+        zoomCamera,
+        render} from './waveformparticles.js';
 
 
 // Arp.start();
@@ -71,35 +72,137 @@ document.addEventListener("DOMContentLoaded", () => {
       }
      };
 
+     var player = new Tone.Player({
+     }).fan(waveform).toMaster();
 
+     let trackIndex = 0;
+     let trackLoaded = false;
 
+     const trackOne = new Tone.Buffer("audio/No one is looking at U (feat. Lorraine).mp3",() => {
+       player.buffer = tracks[trackIndex];
+       playNav.removeChild(loadingDisc);
+       playNav.appendChild(navButtons);
+       trackLoaded = true;
+     });
 
+     const trackTwo = new Tone.Buffer("audio/Drowning.mp3");
 
+     const tracks = [
+       trackOne,
+       trackTwo
+     ];
 
-      const playButton = document.getElementById('play-button');
-      const loading = document.getElementById('fountainTextG');
-      const stop = document.getElementById('stop');
-      const play = document.getElementById('play');
-      playButton.removeChild(stop);
-      playButton.removeChild(play);
+     let trackList = ["No one is looking at U (feat. Lorraine)",
+       "Drowning In You",
+      ];
 
-      playButton.addEventListener('mousedown', function (e) {
-        if (player.state === 'stopped') {
-          player.start();
-          playButton.removeChild(play);
-          playButton.appendChild(stop);
-        }else if (player.state === 'started') {
-          player.stop();
-          playButton.removeChild(stop);
-          playButton.appendChild(play);
-        }
-      });
+    let artistList = ["Nicolas Jaar" ,
+      "Pascaal"];
 
-      var player = new Tone.Player("audio/Drowning.mp3", () => {
-          playButton.removeChild(loading);
-          playButton.appendChild(play);
-        }
-      ).fan(waveform).toMaster();
+     const playButton = document.getElementById('play-button');
+     const stop = document.getElementById('stop');
+     const play = document.getElementById('play');
+     const pause = document.getElementById('pause');
+     const skipForward = document.getElementById('skip-forward');
+     const skipBack = document.getElementById('skip-back');
+     const trackText = document.getElementById('track-text');
+     const trackArtist = document.getElementById('track-artist');
+     const playNav = document.getElementById('play-navigation');
+     const navButtons = document.getElementById('navigation-buttons');
+     const loadingDisc = document.getElementById('loading-disc');
+
+     trackText.innerHTML = trackList[trackIndex];
+     trackArtist.innerHTML = artistList[trackIndex];
+     playButton.removeChild(stop);
+     playButton.removeChild(pause);
+     playNav.removeChild(navButtons);
+
+     let beginning = 0;
+     let end = 0;
+     let offset = 0;
+
+     const playTrack = () => {
+       player.buffer = tracks[trackIndex];
+       console.log(offset);
+       player.start(Tone.Time().now(), (offset  * player.buffer._buffer.duration));
+       Tone.Transport.start(Tone.Time().now());
+     };
+
+     playButton.addEventListener('mousedown', function (e) {
+       if (player.state === 'stopped') {
+         playTrack();
+         playButton.removeChild(play);
+         playButton.appendChild(pause);
+       }else if (player.state === 'started') {
+         player.stop();
+         Tone.Transport.pause();
+         offset = Tone.Transport.seconds / player.buffer._buffer.duration;
+         playButton.removeChild(pause);
+         playButton.appendChild(play);
+       }
+     });
+
+     skipForward.addEventListener('mousedown', () => {
+       Tone.Transport.stop();
+       Tone.Transport.seconds = 0;
+       trackIndex += 1;
+       if( trackIndex > trackList.length - 1) {
+         trackIndex = 0;
+       }
+       trackText.innerHTML = trackList[trackIndex];
+       trackArtist.innerHTML = artistList[trackIndex];
+       offset = 0;
+       if (player.state === "started") {
+         playTrack();
+         Tone.Transport.start();
+       }
+     });
+
+     skipBack.addEventListener('mousedown', () => {
+       Tone.Transport.stop();
+       Tone.Transport.seconds = 0;
+       trackIndex -= 1;
+       if( trackIndex < 0) {
+         trackIndex = trackList.length - 1;
+       }
+       trackText.innerHTML = trackList[trackIndex];
+       trackArtist.innerHTML = artistList[trackIndex];
+       offset = 0;
+       if (player.state === "started") {
+         playTrack();
+       }
+     });
+
+     let trackSlide = document.getElementById("trackSlide");
+     let trackStatus = document.getElementById('trackStatus');
+
+     trackSlide.addEventListener('mousedown', (e) => {
+       console.log(e);
+       offset = (e.x - 1211) / 200;
+       trackStatus.style.width = `${offset * 200}`;
+       if (player.state === "started") {
+         Tone.Transport.stop();
+         Tone.Transport.seconds = 0;
+         playTrack();
+       }
+     });
+
+     let trackSlideAnimate = () => {
+       let time = offset + Tone.Transport.seconds / player.buffer._buffer.duration;
+       trackStatus.style.width = `${time * 200}`;
+       if (time * 200 >= 200) {
+         Tone.Transport.stop();
+         Tone.Transport.seconds = 0;
+         trackIndex += 1;
+         if( trackIndex > trackList.length - 1) {
+           trackIndex = 0;
+         }
+         trackText.innerHTML = trackList[trackIndex];
+         offset = 0;
+         playTrack();
+         Tone.Transport.start();
+       }
+     };
 
       const viewButton = document.getElementById('view');
       const viewOn = document.getElementById('view-on');
@@ -112,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
           viewing = true;
           viewButton.removeChild(viewOn);
           viewButton.appendChild(viewOff);
-          
+
         } else {
           viewing = false;
           viewButton.removeChild(viewOff);
@@ -183,6 +286,14 @@ document.addEventListener("DOMContentLoaded", () => {
           e.preventDefault();
           synthHelpView.style.display = "none";
         });
+
+        function animate() {
+          requestAnimationFrame( animate );
+          render();
+          if (trackLoaded === true){
+            trackSlideAnimate();
+          }
+        }
 
     init();
     animate();
