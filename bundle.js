@@ -22602,20 +22602,22 @@ document.addEventListener("DOMContentLoaded", function () {
   var trackIndex = 0;
   var trackLoaded = false;
 
-  var trackOne = new _tone2.default.Buffer("audio/No one is looking at U (feat. Lorraine).mp3", function () {
+  var trackOne = new _tone2.default.Buffer("audio/Drowning.mp3", function () {
     player.buffer = tracks[trackIndex];
     playNav.removeChild(loadingDisc);
     playNav.appendChild(navButtons);
     trackLoaded = true;
   });
 
-  var trackTwo = new _tone2.default.Buffer("audio/Drowning.mp3");
+  var trackTwo = new _tone2.default.Buffer("audio/No one is looking at U (feat. Lorraine).mp3");
+  var trackThree = new _tone2.default.Buffer('audio/GimmeSome.mp3');
+  var trackFour = new _tone2.default.Buffer('audio/LifeRoundHere.mp3');
 
-  var tracks = [trackOne, trackTwo];
+  var tracks = [trackOne, trackTwo, trackThree, trackFour];
 
-  var trackList = ["No one is looking at U (feat. Lorraine)", "Drowning In You"];
+  var trackList = ["Drowning In You", "No one is looking at U (feat. Lorraine)", "Gimme Some", 'Life Round Here'];
 
-  var artistList = ["Nicolas Jaar", "Pascaal"];
+  var artistList = ["Pascaal", "Nicolas Jaar", "Weval", "James Blake ft. Chance The Rapper"];
 
   var playButton = document.getElementById('play-button');
   var stop = document.getElementById('stop');
@@ -22696,7 +22698,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   trackSlide.addEventListener('mousedown', function (e) {
     console.log(e);
-    offset = (e.x - 1211) / 200;
+    offset = (e.x - 1206) / 200;
     trackStatus.style.width = '' + offset * 200;
     if (player.state === "started") {
       _tone2.default.Transport.stop();

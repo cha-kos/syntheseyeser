@@ -78,26 +78,34 @@ document.addEventListener("DOMContentLoaded", () => {
      let trackIndex = 0;
      let trackLoaded = false;
 
-     const trackOne = new Tone.Buffer("audio/No one is looking at U (feat. Lorraine).mp3",() => {
+     const trackOne = new Tone.Buffer("audio/Drowning.mp3",() => {
        player.buffer = tracks[trackIndex];
        playNav.removeChild(loadingDisc);
        playNav.appendChild(navButtons);
        trackLoaded = true;
      });
 
-     const trackTwo = new Tone.Buffer("audio/Drowning.mp3");
+     const trackTwo = new Tone.Buffer("audio/No one is looking at U (feat. Lorraine).mp3");
+     const trackThree = new Tone.Buffer('audio/GimmeSome.mp3');
+     const trackFour = new Tone.Buffer('audio/LifeRoundHere.mp3');
 
      const tracks = [
        trackOne,
-       trackTwo
+       trackTwo,
+       trackThree,
+       trackFour
      ];
 
-     let trackList = ["No one is looking at U (feat. Lorraine)",
-       "Drowning In You",
+     let trackList = ["Drowning In You",
+       "No one is looking at U (feat. Lorraine)",
+       "Gimme Some",
+       'Life Round Here'
       ];
 
-    let artistList = ["Nicolas Jaar" ,
-      "Pascaal"];
+    let artistList = ["Pascaal",
+      "Nicolas Jaar",
+      "Weval",
+      "James Blake ft. Chance The Rapper"];
 
      const playButton = document.getElementById('play-button');
      const stop = document.getElementById('stop');
@@ -178,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
      trackSlide.addEventListener('mousedown', (e) => {
        console.log(e);
-       offset = (e.x - 1211) / 200;
+       offset = (e.x - 1206) / 200;
        trackStatus.style.width = `${offset * 200}`;
        if (player.state === "started") {
          Tone.Transport.stop();
