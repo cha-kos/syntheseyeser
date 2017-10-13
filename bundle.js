@@ -22698,7 +22698,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   trackSlide.addEventListener('mousedown', function (e) {
     console.log(e);
-    offset = (e.x - 1206) / 200;
+    offset = (e.x - 1211) / 200;
     trackStatus.style.width = '' + offset * 200;
     if (player.state === "started") {
       _tone2.default.Transport.stop();
