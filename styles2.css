@@ -102,7 +102,7 @@ a{
   border: none;
   position: fixed;
   margin-left: 40px;
-  left: 20px;
+  right: 20px;
   bottom: 30px;
   cursor: pointer;
 }
@@ -111,7 +111,7 @@ a{
   display: flex;
   flex-direction: column;
   margin-left: 40px;
-  bottom: 0px;
+	right: 30px;
   position: fixed;
   bottom: 20px;
   transition: all 1s ease;
@@ -226,7 +226,7 @@ a{
 }
 .music-player{
 	bottom: 10px;
-	right: 30px;
+	left: 30px;
 	width: 200px;
 	position: fixed;
 	display: flex;
@@ -241,10 +241,10 @@ a{
   padding: 30px;
 }
 
-#navigation-buttons{
+/*#navigation-buttons{
 	display: flex;
 	justify-content: space-between;
-}
+}*/
 
 #skip-back{
 	padding-left: 20px;
