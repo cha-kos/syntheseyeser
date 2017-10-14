@@ -131,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
      const playTrack = () => {
        player.buffer = tracks[trackIndex];
-       console.log(offset);
        player.start(Tone.Time().now(), (offset  * player.buffer._buffer.duration));
        Tone.Transport.start(Tone.Time().now());
      };
@@ -185,9 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
      let trackStatus = document.getElementById('trackStatus');
 
      trackSlide.addEventListener('mousedown', (e) => {
-       console.log(e);
        offset = (e.x - 30) / 200;
-       console.log(e.x);
        trackStatus.style.width = `${offset * 200}`;
        if (player.state === "started") {
          Tone.Transport.stop();

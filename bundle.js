@@ -22643,7 +22643,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var playTrack = function playTrack() {
     player.buffer = tracks[trackIndex];
-    console.log(offset);
     player.start(_tone2.default.Time().now(), offset * player.buffer._buffer.duration);
     _tone2.default.Transport.start(_tone2.default.Time().now());
   };
@@ -22697,9 +22696,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var trackStatus = document.getElementById('trackStatus');
 
   trackSlide.addEventListener('mousedown', function (e) {
-    console.log(e);
     offset = (e.x - 30) / 200;
-    console.log(e.x);
     trackStatus.style.width = '' + offset * 200;
     if (player.state === "started") {
       _tone2.default.Transport.stop();
