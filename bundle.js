@@ -22823,7 +22823,7 @@ document.addEventListener("DOMContentLoaded", function () {
   media.open().then(function () {
     //opening is activates the microphone
     //starting lets audio through
-    media.start(10);
+    console.log("hey it's working");
   });
 
   (0, _waveformparticles.init)();
