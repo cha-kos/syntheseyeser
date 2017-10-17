@@ -22789,12 +22789,19 @@ document.addEventListener("DOMContentLoaded", function () {
   var synthHelpButton = document.getElementById('synth-help-button');
   var synthHelpView = document.getElementById('synth-help');
   var closeSynthHelp = document.getElementById('close-synth-help');
+  var helpOpen = false;
 
   synthHelpView.style.display = "none";
 
   synthHelpButton.addEventListener('mousedown', function (e) {
     e.preventDefault();
-    synthHelpView.style.display = "flex";
+    if (helpOpen === false) {
+      helpOpen = true;
+      synthHelpView.style.display = "flex";
+    } else if (helpOpen === true) {
+      helpOpen = false;
+      synthHelpView.style.display = "none";
+    }
   });
 
   closeSynthHelp.addEventListener('mousedown', function (e) {

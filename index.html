@@ -69,6 +69,24 @@
           </svg></button>
           <div class='synth-view' id='synth-view'>
             <div class='synth-holder-div'>
+              <div class='synth-help' id='synth-help'>
+                <div class='synth-help-text'>
+                  <div class='help-title'>Synth Help</div>
+                  <div class='help-text'> The synth can be played by clicking the piano pictured, or using your computer keyboard.
+                    Keyboard letters respond to the piano as follows</div>
+                    <img class='keymap' src='keymap.png'/>
+                  </div>
+                  <div class='synth-help-text'>
+                    <div class='help-title'> Delay Help </div>
+                    <div class='help-text'> An audio delay creates an echo effect. </div>
+                    <div class='help-text'>The Time knob adjusts the time of which you hear the echo after the sound is played.</div>
+                    <div class='help-text'>The Feedback knob adjusts how much of the echo you hear. i.e. Feedback value of 1 will produce a never ending echo</div>
+                  </div>
+                  <svg class='close-synth-help' id='close-synth-help' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </div>
               <div>
             <svg class='synth-view-close' id='synth-view-close' xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
             <div class='synth-help-button' id='synth-help-button'><i id="synth-help-button" class="fa fa-question fa-2x" aria-hidden="true"></i></div>
@@ -85,24 +103,6 @@
             </div>
             <canvas nx='keyboard' id='keyboard'></canvas>
           </div>
-          <div class='synth-help' id='synth-help'>
-            <div class='synth-help-text'>
-              <div class='help-title'>Synth Help</div>
-              <div class='help-text'> The synth can be played by clicking the piano pictured, or using your computer keyboard.
-                Keyboard letters respond to the piano as follows</div>
-              <img class='keymap' src='keymap.png'/>
-            </div>
-            <div class='synth-help-text'>
-              <div class='help-title'> Delay Help </div>
-              <div class='help-text'> An audio delay creates an echo effect. </div>
-                <div class='help-text'>The Time knob adjusts the time of which you hear the echo after the sound is played.</div>
-                <div class='help-text'>The Feedback knob adjusts how much of the echo you hear. i.e. Feedback value of 1 will produce a never ending echo</div>
-              </div>
-              <svg class='close-synth-help' id='close-synth-help' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-            </div>
         </div>
         </div>
         </div>

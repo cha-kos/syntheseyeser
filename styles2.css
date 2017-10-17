@@ -172,9 +172,11 @@ a{
 .synth-help{
 	display: flex;
 	flex-direction: row;
-	/*width: 600px;*/
+	max-width: 900px;
 	color: white;
 	font-size: 22px;
+	line-height: 1.2;
+	letter-spacing: 0.4;
 }
 
 .synth-help-text{
