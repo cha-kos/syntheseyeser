@@ -228,7 +228,7 @@ a{
 .music-player{
 	bottom: 10px;
 	left: 30px;
-	width: 200px;
+	width: 210px;
 	position: fixed;
 	display: flex;
 	flex-direction: column;

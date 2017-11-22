@@ -127,3 +127,12 @@
 
 				renderer.render( scene, camera );
 			}
+
+
+function inc(){
+  var x;
+  return function(){
+    x+= 1;
+    console.log(x);
+  };
+}

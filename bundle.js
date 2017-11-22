@@ -23106,6 +23106,14 @@ function render() {
 	renderer.render(scene, camera);
 }
 
+function inc() {
+	var x;
+	return function () {
+		x += 1;
+		console.log(x);
+	};
+}
+
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map
