@@ -22519,10 +22519,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.viewing = undefined;
 
-var _arp = __webpack_require__(2);
-
-var Arp = _interopRequireWildcard(_arp);
-
 var _tone = __webpack_require__(0);
 
 var _tone2 = _interopRequireDefault(_tone);
@@ -22532,8 +22528,6 @@ var _notes = __webpack_require__(3);
 var _waveformparticles = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var viewing = exports.viewing = false;
 
@@ -22637,6 +22631,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var beginning = 0;
   var end = 0;
   var offset = 0;
+  var duration;
 
   var playTrack = function playTrack() {
     player.buffer = tracks[trackIndex];
@@ -22650,9 +22645,16 @@ document.addEventListener("DOMContentLoaded", function () {
       playButton.removeChild(play);
       playButton.appendChild(pause);
     } else if (player.state === 'started') {
+      console.log(offset);
+      console.log("offset");
+      duration = player.buffer._buffer.duration;
+      offset = (_tone2.default.Transport.seconds + offset * duration) / duration;
       player.stop();
       _tone2.default.Transport.pause();
-      offset = _tone2.default.Transport.seconds / player.buffer._buffer.duration;
+      console.log(_tone2.default.Transport.seconds);
+      console.log("seconds");
+      console.log(player.buffer._buffer.duration);
+      console.log("duration");
       playButton.removeChild(pause);
       playButton.appendChild(play);
     }
@@ -22694,6 +22696,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   trackSlide.addEventListener('mousedown', function (e) {
     offset = (e.x - 30) / 200;
+    console.log(offset);
     trackStatus.style.width = '' + offset * 200;
     if (player.state === "started") {
       _tone2.default.Transport.stop();
@@ -22833,12 +22836,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/ChrisHakos/Documents/Development/Syntheseyeser/src/arp.jsx'\n    at Error (native)");
-
-/***/ }),
+/* 2 */,
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 

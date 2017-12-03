@@ -1,4 +1,3 @@
-import * as Arp from './arp';
 import Tone from 'tone';
 import { NOTES, KEY_OBJ} from './notes';
 import {init,
@@ -122,9 +121,10 @@ document.addEventListener("DOMContentLoaded", () => {
      playButton.removeChild(pause);
      playNav.removeChild(navButtons);
 
-     let beginning = 0;
-     let end = 0;
-     let offset = 0;
+     var beginning = 0;
+     var end = 0;
+     var offset = 0;
+     var duration;
 
      const playTrack = () => {
        player.buffer = tracks[trackIndex];
@@ -138,9 +138,16 @@ document.addEventListener("DOMContentLoaded", () => {
          playButton.removeChild(play);
          playButton.appendChild(pause);
        }else if (player.state === 'started') {
+         console.log(offset);
+         console.log("offset");
+         duration = player.buffer._buffer.duration;
+         offset = (Tone.Transport.seconds + (offset * duration)) / duration;
          player.stop();
          Tone.Transport.pause();
-         offset = Tone.Transport.seconds / player.buffer._buffer.duration;
+         console.log(Tone.Transport.seconds);
+         console.log("seconds");
+         console.log(player.buffer._buffer.duration);
+         console.log("duration");
          playButton.removeChild(pause);
          playButton.appendChild(play);
        }
@@ -182,6 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
      trackSlide.addEventListener('mousedown', (e) => {
        offset = (e.x - 30) / 200;
+       console.log(offset);
        trackStatus.style.width = `${offset * 200}`;
        if (player.state === "started") {
          Tone.Transport.stop();
