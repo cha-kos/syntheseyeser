@@ -22535,10 +22535,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-// Arp.start();
 var viewing = exports.viewing = false;
-// import {init, animate, waveform} from './waveform3d.js';
-
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -22837,46 +22834,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.start = undefined;
-
-var _tone = __webpack_require__(0);
-
-var _tone2 = _interopRequireDefault(_tone);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var synth = new _tone2.default.Synth();
-var synth2 = new _tone2.default.Synth();
-
-// synth.toMaster();
-// synth2.toMaster();
-
-
-// synth.triggetAttackRelease("C4", 0.25, time);
-
-var pattern = new _tone2.default.Pattern(function (time, none) {
-  synth.triggerAttackRelease(none, 0.5);
-}, ["E1", "C1", "A1", "G1", "F1"]);
-
-var pattern2 = new _tone2.default.Pattern(function (time, none) {
-  synth2.triggerAttackRelease(none, 0.5);
-}, ["E3", "C3", "A3", "G3", "F3"]);
-
-pattern.start(1);
-
-pattern2.start(1);
-
-var start = exports.start = function start() {
-  return _tone2.default.Transport.start();
-};
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/ChrisHakos/Documents/Development/Syntheseyeser/src/arp.jsx'\n    at Error (native)");
 
 /***/ }),
 /* 3 */

@@ -1,7 +1,6 @@
 import * as Arp from './arp';
 import Tone from 'tone';
 import { NOTES, KEY_OBJ} from './notes';
-// import {init, animate, waveform} from './waveform3d.js';
 import {init,
         animate,
         waveform,
@@ -9,8 +8,6 @@ import {init,
         zoomCamera,
         render} from './waveformparticles.js';
 
-
-// Arp.start();
 export var viewing = false;
 
 document.addEventListener("DOMContentLoaded", () => {
