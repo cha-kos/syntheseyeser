@@ -138,8 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
          playButton.removeChild(play);
          playButton.appendChild(pause);
        }else if (player.state === 'started') {
-         console.log(offset);
-         console.log("offset");
          duration = player.buffer._buffer.duration;
          offset = (Tone.Transport.seconds + (offset * duration)) / duration;
          player.stop();
