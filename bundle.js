@@ -60,11 +60,337 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.viewing = undefined;
+
+var _tone = __webpack_require__(1);
+
+var _tone2 = _interopRequireDefault(_tone);
+
+var _notes = __webpack_require__(2);
+
+var _waveformparticles = __webpack_require__(3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var viewing = exports.viewing = false;
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  var fft = new _tone2.default.Analyser('fft', 32);
+  var delay = new _tone2.default.FeedbackDelay(0.5, 0.5).fan(_waveformparticles.waveform, fft).toMaster();
+  delay.wet._param.value = 0.5;
+  var synth = new _tone2.default.Synth().connect(delay);
+
+  var c = document.getElementById("feedback");
+  var ctx = c.getContext("2d");
+
+  var grd = ctx.createLinearGradient(0, 0, 95, 0);
+  grd.addColorStop(0, "#FF00CC");
+  grd.addColorStop(1, "#24BEE5");
+
+  nx.onload = function () {
+    keyboard.octaves = 1.43;
+    keyboard.init();
+
+    feedback.val.value = 0.5;
+    feedback.colors.accent = grd;
+    feedback.init();
+
+    delayTime.val.value = 0.5;
+    delayTime.colors.accent = grd;
+    delayTime.fontColor = 'white';
+    delayTime.init();
+
+    feedback.on('value', function (value) {
+      delay.feedback.overridden = true;
+      delay.feedback._param.value = value;
+    });
+
+    delayTime.colors.accent = grd;
+
+    delayTime.on('value', function (value) {
+      delay.delayTime.overridden = true;
+      delay.delayTime._param.value = value;
+    });
+    keyboard.on('*', function (data) {
+      if (data.on !== 0) {
+        synth.triggerAttackRelease(_notes.NOTES[data.note - 48], "8n");
+      }
+    });
+    synthView.style.display = 'none';
+  };
+
+  document.onkeydown = function (e) {
+    if (_notes.KEY_OBJ[e.keyCode]) {
+      keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
+    }
+  };
+  document.onkeyup = function (e) {
+    if (_notes.KEY_OBJ[e.keyCode]) {
+      keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
+    }
+  };
+
+  var player = new _tone2.default.Player({}).fan(_waveformparticles.waveform).toMaster();
+
+  var trackIndex = 0;
+  var trackLoaded = false;
+
+  var trackOne = new _tone2.default.Buffer("audio/Drowning.mp3", function () {
+    player.buffer = tracks[trackIndex];
+    playNav.removeChild(loadingDisc);
+    playNav.appendChild(navButtons);
+    trackLoaded = true;
+  });
+
+  var trackTwo = new _tone2.default.Buffer("audio/No one is looking at U (feat. Lorraine).mp3");
+  var trackThree = new _tone2.default.Buffer('audio/GimmeSome.mp3');
+  var trackFour = new _tone2.default.Buffer('audio/LifeRoundHere.mp3');
+
+  var tracks = [trackOne, trackTwo, trackThree, trackFour];
+
+  var trackList = ["Drowning In You", "No one is looking at U (feat. Lorraine)", "Gimme Some", 'Life Round Here'];
+
+  var artistList = ["Pascaal", "Nicolas Jaar", "Weval", "James Blake ft. Chance The Rapper"];
+
+  var playButton = document.getElementById('play-button');
+  var stop = document.getElementById('stop');
+  var play = document.getElementById('play');
+  var pause = document.getElementById('pause');
+  var skipForward = document.getElementById('skip-forward');
+  var skipBack = document.getElementById('skip-back');
+  var trackText = document.getElementById('track-text');
+  var trackArtist = document.getElementById('track-artist');
+  var playNav = document.getElementById('play-navigation');
+  var navButtons = document.getElementById('navigation-buttons');
+  var loadingDisc = document.getElementById('loading-disc');
+
+  trackText.innerHTML = trackList[trackIndex];
+  trackArtist.innerHTML = artistList[trackIndex];
+  playButton.removeChild(stop);
+  playButton.removeChild(pause);
+  playNav.removeChild(navButtons);
+
+  var beginning = 0;
+  var end = 0;
+  var offset = 0;
+  var duration;
+
+  var playTrack = function playTrack() {
+    player.buffer = tracks[trackIndex];
+    player.start(_tone2.default.Time().now(), offset * player.buffer._buffer.duration);
+    _tone2.default.Transport.start(_tone2.default.Time().now());
+  };
+
+  playButton.addEventListener('mousedown', function (e) {
+    if (player.state === 'stopped') {
+      playTrack();
+      playButton.removeChild(play);
+      playButton.appendChild(pause);
+    } else if (player.state === 'started') {
+      duration = player.buffer._buffer.duration;
+      offset = (_tone2.default.Transport.seconds + offset * duration) / duration;
+      player.stop();
+      _tone2.default.Transport.pause();
+      console.log(_tone2.default.Transport.seconds);
+      console.log("seconds");
+      console.log(player.buffer._buffer.duration);
+      console.log("duration");
+      playButton.removeChild(pause);
+      playButton.appendChild(play);
+    }
+  });
+
+  skipForward.addEventListener('mousedown', function () {
+    _tone2.default.Transport.stop();
+    _tone2.default.Transport.seconds = 0;
+    trackIndex += 1;
+    if (trackIndex > trackList.length - 1) {
+      trackIndex = 0;
+    }
+    trackText.innerHTML = trackList[trackIndex];
+    trackArtist.innerHTML = artistList[trackIndex];
+    offset = 0;
+    if (player.state === "started") {
+      playTrack();
+      _tone2.default.Transport.start();
+    }
+  });
+
+  skipBack.addEventListener('mousedown', function () {
+    _tone2.default.Transport.stop();
+    _tone2.default.Transport.seconds = 0;
+    trackIndex -= 1;
+    if (trackIndex < 0) {
+      trackIndex = trackList.length - 1;
+    }
+    trackText.innerHTML = trackList[trackIndex];
+    trackArtist.innerHTML = artistList[trackIndex];
+    offset = 0;
+    if (player.state === "started") {
+      playTrack();
+    }
+  });
+
+  var trackSlide = document.getElementById("trackSlide");
+  var trackStatus = document.getElementById('trackStatus');
+
+  trackSlide.addEventListener('mousedown', function (e) {
+    offset = (e.x - 30) / 200;
+    console.log(offset);
+    trackStatus.style.width = '' + offset * 200;
+    if (player.state === "started") {
+      _tone2.default.Transport.stop();
+      _tone2.default.Transport.seconds = 0;
+      playTrack();
+    }
+  });
+
+  var trackSlideAnimate = function trackSlideAnimate() {
+    var time = offset + _tone2.default.Transport.seconds / player.buffer._buffer.duration;
+    trackStatus.style.width = '' + time * 200;
+    if (time * 200 >= 200) {
+      _tone2.default.Transport.stop();
+      _tone2.default.Transport.seconds = 0;
+      trackIndex += 1;
+      if (trackIndex > trackList.length - 1) {
+        trackIndex = 0;
+      }
+      trackText.innerHTML = trackList[trackIndex];
+      offset = 0;
+      playTrack();
+      _tone2.default.Transport.start();
+    }
+  };
+
+  var viewButton = document.getElementById('view');
+  var viewOn = document.getElementById('view-on');
+  var viewOff = document.getElementById('view-off');
+  viewButton.removeChild(viewOff);
+
+  viewButton.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    if (viewing === false) {
+      exports.viewing = viewing = true;
+      viewButton.removeChild(viewOn);
+      viewButton.appendChild(viewOff);
+    } else {
+      exports.viewing = viewing = false;
+      viewButton.removeChild(viewOff);
+      viewButton.appendChild(viewOn);
+      (0, _waveformparticles.resetCamera)();
+    }
+  });
+
+  var synthDiv = document.getElementById('synth-div');
+  var synthViewButton = document.getElementById('synth-view-button');
+  var synthView = document.getElementById('synth-view');
+  var synthViewClose = document.getElementById('synth-view-close');
+
+  synthViewButton.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    synthDiv.removeChild(synthViewButton);
+    synthView.style.display = 'block';
+  });
+
+  synthViewClose.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    synthView.style.display = 'none';
+    synthDiv.appendChild(synthViewButton);
+  });
+
+  document.addEventListener('wheel', function (e) {
+    if (viewing === true) {
+      if (e.deltaY < 0) {
+        (0, _waveformparticles.zoomCamera)(-100);
+      } else if (e.deltaY > 0) {
+        (0, _waveformparticles.zoomCamera)(100);
+      }
+    }
+  });
+
+  var welcomeModal = document.getElementById('welcomeModal');
+  var span = document.getElementsByClassName("close")[0];
+  welcomeModal.style.display = "block";
+  span.onclick = function () {
+    welcomeModal.style.display = "none";
+  };
+  window.onclick = function (event) {
+    if (event.target == welcomeModal) {
+      welcomeModal.style.display = "none";
+    }
+  };
+
+  var infoButton = document.getElementById('info-button');
+  infoButton.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    welcomeModal.style.display = 'block';
+  });
+
+  var synthHelpButton = document.getElementById('synth-help-button');
+  var synthHelpView = document.getElementById('synth-help');
+  var closeSynthHelp = document.getElementById('close-synth-help');
+  var helpOpen = false;
+
+  synthHelpView.style.display = "none";
+
+  synthHelpButton.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    if (helpOpen === false) {
+      helpOpen = true;
+      synthHelpView.style.display = "flex";
+    } else if (helpOpen === true) {
+      helpOpen = false;
+      synthHelpView.style.display = "none";
+    }
+  });
+
+  closeSynthHelp.addEventListener('mousedown', function (e) {
+    e.preventDefault();
+    synthHelpView.style.display = "none";
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    (0, _waveformparticles.render)();
+    if (trackLoaded === true) {
+      trackSlideAnimate();
+    }
+  }
+
+  var media = new _tone2.default.UserMedia().fan(_waveformparticles.waveform);
+
+  // console.log(media);
+  // window.media = media;
+  // media.enumerateDevices().then(function(devices){
+  // 	console.log(devices);
+  // });
+  //
+  // media.open().then(function(){
+  // 	//opening is activates the microphone
+  // 	//starting lets audio through
+  //   console.log("hey it's working");
+  // });
+
+  (0, _waveformparticles.init)();
+  animate();
+});
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory){
@@ -22508,336 +22834,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory){
 }));
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.viewing = undefined;
-
-var _tone = __webpack_require__(0);
-
-var _tone2 = _interopRequireDefault(_tone);
-
-var _notes = __webpack_require__(3);
-
-var _waveformparticles = __webpack_require__(4);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var viewing = exports.viewing = false;
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  var fft = new _tone2.default.Analyser('fft', 32);
-  var delay = new _tone2.default.FeedbackDelay(0.5, 0.5).fan(_waveformparticles.waveform, fft).toMaster();
-  delay.wet._param.value = 0.5;
-  var synth = new _tone2.default.Synth().connect(delay);
-
-  var c = document.getElementById("feedback");
-  var ctx = c.getContext("2d");
-
-  var grd = ctx.createLinearGradient(0, 0, 95, 0);
-  grd.addColorStop(0, "#FF00CC");
-  grd.addColorStop(1, "#24BEE5");
-
-  nx.onload = function () {
-    keyboard.octaves = 1.43;
-    keyboard.init();
-
-    feedback.val.value = 0.5;
-    feedback.colors.accent = grd;
-    feedback.init();
-
-    delayTime.val.value = 0.5;
-    delayTime.colors.accent = grd;
-    delayTime.fontColor = 'white';
-    delayTime.init();
-
-    feedback.on('value', function (value) {
-      delay.feedback.overridden = true;
-      delay.feedback._param.value = value;
-    });
-
-    delayTime.colors.accent = grd;
-
-    delayTime.on('value', function (value) {
-      delay.delayTime.overridden = true;
-      delay.delayTime._param.value = value;
-    });
-    keyboard.on('*', function (data) {
-      if (data.on !== 0) {
-        synth.triggerAttackRelease(_notes.NOTES[data.note - 48], "8n");
-      }
-    });
-    synthView.style.display = 'none';
-  };
-
-  document.onkeydown = function (e) {
-    if (_notes.KEY_OBJ[e.keyCode]) {
-      keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
-    }
-  };
-  document.onkeyup = function (e) {
-    if (_notes.KEY_OBJ[e.keyCode]) {
-      keyboard.toggle(keyboard.keys[_notes.KEY_OBJ[e.keyCode].key]);
-    }
-  };
-
-  var player = new _tone2.default.Player({}).fan(_waveformparticles.waveform).toMaster();
-
-  var trackIndex = 0;
-  var trackLoaded = false;
-
-  var trackOne = new _tone2.default.Buffer("audio/Drowning.mp3", function () {
-    player.buffer = tracks[trackIndex];
-    playNav.removeChild(loadingDisc);
-    playNav.appendChild(navButtons);
-    trackLoaded = true;
-  });
-
-  var trackTwo = new _tone2.default.Buffer("audio/No one is looking at U (feat. Lorraine).mp3");
-  var trackThree = new _tone2.default.Buffer('audio/GimmeSome.mp3');
-  var trackFour = new _tone2.default.Buffer('audio/LifeRoundHere.mp3');
-
-  var tracks = [trackOne, trackTwo, trackThree, trackFour];
-
-  var trackList = ["Drowning In You", "No one is looking at U (feat. Lorraine)", "Gimme Some", 'Life Round Here'];
-
-  var artistList = ["Pascaal", "Nicolas Jaar", "Weval", "James Blake ft. Chance The Rapper"];
-
-  var playButton = document.getElementById('play-button');
-  var stop = document.getElementById('stop');
-  var play = document.getElementById('play');
-  var pause = document.getElementById('pause');
-  var skipForward = document.getElementById('skip-forward');
-  var skipBack = document.getElementById('skip-back');
-  var trackText = document.getElementById('track-text');
-  var trackArtist = document.getElementById('track-artist');
-  var playNav = document.getElementById('play-navigation');
-  var navButtons = document.getElementById('navigation-buttons');
-  var loadingDisc = document.getElementById('loading-disc');
-
-  trackText.innerHTML = trackList[trackIndex];
-  trackArtist.innerHTML = artistList[trackIndex];
-  playButton.removeChild(stop);
-  playButton.removeChild(pause);
-  playNav.removeChild(navButtons);
-
-  var beginning = 0;
-  var end = 0;
-  var offset = 0;
-  var duration;
-
-  var playTrack = function playTrack() {
-    player.buffer = tracks[trackIndex];
-    player.start(_tone2.default.Time().now(), offset * player.buffer._buffer.duration);
-    _tone2.default.Transport.start(_tone2.default.Time().now());
-  };
-
-  playButton.addEventListener('mousedown', function (e) {
-    if (player.state === 'stopped') {
-      playTrack();
-      playButton.removeChild(play);
-      playButton.appendChild(pause);
-    } else if (player.state === 'started') {
-      console.log(offset);
-      console.log("offset");
-      duration = player.buffer._buffer.duration;
-      offset = (_tone2.default.Transport.seconds + offset * duration) / duration;
-      player.stop();
-      _tone2.default.Transport.pause();
-      console.log(_tone2.default.Transport.seconds);
-      console.log("seconds");
-      console.log(player.buffer._buffer.duration);
-      console.log("duration");
-      playButton.removeChild(pause);
-      playButton.appendChild(play);
-    }
-  });
-
-  skipForward.addEventListener('mousedown', function () {
-    _tone2.default.Transport.stop();
-    _tone2.default.Transport.seconds = 0;
-    trackIndex += 1;
-    if (trackIndex > trackList.length - 1) {
-      trackIndex = 0;
-    }
-    trackText.innerHTML = trackList[trackIndex];
-    trackArtist.innerHTML = artistList[trackIndex];
-    offset = 0;
-    if (player.state === "started") {
-      playTrack();
-      _tone2.default.Transport.start();
-    }
-  });
-
-  skipBack.addEventListener('mousedown', function () {
-    _tone2.default.Transport.stop();
-    _tone2.default.Transport.seconds = 0;
-    trackIndex -= 1;
-    if (trackIndex < 0) {
-      trackIndex = trackList.length - 1;
-    }
-    trackText.innerHTML = trackList[trackIndex];
-    trackArtist.innerHTML = artistList[trackIndex];
-    offset = 0;
-    if (player.state === "started") {
-      playTrack();
-    }
-  });
-
-  var trackSlide = document.getElementById("trackSlide");
-  var trackStatus = document.getElementById('trackStatus');
-
-  trackSlide.addEventListener('mousedown', function (e) {
-    offset = (e.x - 30) / 200;
-    console.log(offset);
-    trackStatus.style.width = '' + offset * 200;
-    if (player.state === "started") {
-      _tone2.default.Transport.stop();
-      _tone2.default.Transport.seconds = 0;
-      playTrack();
-    }
-  });
-
-  var trackSlideAnimate = function trackSlideAnimate() {
-    var time = offset + _tone2.default.Transport.seconds / player.buffer._buffer.duration;
-    trackStatus.style.width = '' + time * 200;
-    if (time * 200 >= 200) {
-      _tone2.default.Transport.stop();
-      _tone2.default.Transport.seconds = 0;
-      trackIndex += 1;
-      if (trackIndex > trackList.length - 1) {
-        trackIndex = 0;
-      }
-      trackText.innerHTML = trackList[trackIndex];
-      offset = 0;
-      playTrack();
-      _tone2.default.Transport.start();
-    }
-  };
-
-  var viewButton = document.getElementById('view');
-  var viewOn = document.getElementById('view-on');
-  var viewOff = document.getElementById('view-off');
-  viewButton.removeChild(viewOff);
-
-  viewButton.addEventListener('mousedown', function (e) {
-    e.preventDefault();
-    if (viewing === false) {
-      exports.viewing = viewing = true;
-      viewButton.removeChild(viewOn);
-      viewButton.appendChild(viewOff);
-    } else {
-      exports.viewing = viewing = false;
-      viewButton.removeChild(viewOff);
-      viewButton.appendChild(viewOn);
-      (0, _waveformparticles.resetCamera)();
-    }
-  });
-
-  var synthDiv = document.getElementById('synth-div');
-  var synthViewButton = document.getElementById('synth-view-button');
-  var synthView = document.getElementById('synth-view');
-  var synthViewClose = document.getElementById('synth-view-close');
-
-  synthViewButton.addEventListener('mousedown', function (e) {
-    e.preventDefault();
-    synthDiv.removeChild(synthViewButton);
-    synthView.style.display = 'block';
-  });
-
-  synthViewClose.addEventListener('mousedown', function (e) {
-    e.preventDefault();
-    synthView.style.display = 'none';
-    synthDiv.appendChild(synthViewButton);
-  });
-
-  document.addEventListener('wheel', function (e) {
-    if (viewing === true) {
-      if (e.deltaY < 0) {
-        (0, _waveformparticles.zoomCamera)(-100);
-      } else if (e.deltaY > 0) {
-        (0, _waveformparticles.zoomCamera)(100);
-      }
-    }
-  });
-
-  var welcomeModal = document.getElementById('welcomeModal');
-  var span = document.getElementsByClassName("close")[0];
-  welcomeModal.style.display = "block";
-  span.onclick = function () {
-    welcomeModal.style.display = "none";
-  };
-  window.onclick = function (event) {
-    if (event.target == welcomeModal) {
-      welcomeModal.style.display = "none";
-    }
-  };
-
-  var infoButton = document.getElementById('info-button');
-  infoButton.addEventListener('mousedown', function (e) {
-    e.preventDefault();
-    welcomeModal.style.display = 'block';
-  });
-
-  var synthHelpButton = document.getElementById('synth-help-button');
-  var synthHelpView = document.getElementById('synth-help');
-  var closeSynthHelp = document.getElementById('close-synth-help');
-  var helpOpen = false;
-
-  synthHelpView.style.display = "none";
-
-  synthHelpButton.addEventListener('mousedown', function (e) {
-    e.preventDefault();
-    if (helpOpen === false) {
-      helpOpen = true;
-      synthHelpView.style.display = "flex";
-    } else if (helpOpen === true) {
-      helpOpen = false;
-      synthHelpView.style.display = "none";
-    }
-  });
-
-  closeSynthHelp.addEventListener('mousedown', function (e) {
-    e.preventDefault();
-    synthHelpView.style.display = "none";
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    (0, _waveformparticles.render)();
-    if (trackLoaded === true) {
-      trackSlideAnimate();
-    }
-  }
-
-  // let media = new Tone.UserMedia().fan(waveform);
-  //
-  // console.log(media);
-  // window.media = media;
-  // // media.enumerateDevices().then(function(devices){
-  // // 	console.log(devices);
-  // // });
-  //
-  // media.open().then(function(){
-  // 	//opening is activates the microphone
-  // 	//starting lets audio through
-  //   console.log("hey it's working");
-  // });
-
-  (0, _waveformparticles.init)();
-  animate();
-});
-
-/***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22910,7 +22907,7 @@ var KEY_OBJ = exports.KEY_OBJ = {
 };
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22926,9 +22923,9 @@ exports.resetCamera = resetCamera;
 exports.zoomCamera = zoomCamera;
 exports.render = render;
 
-var _entry = __webpack_require__(1);
+var _entry = __webpack_require__(0);
 
-var _tone = __webpack_require__(0);
+var _tone = __webpack_require__(1);
 
 var _tone2 = _interopRequireDefault(_tone);
 
