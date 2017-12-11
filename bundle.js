@@ -373,12 +373,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var media = new _tone2.default.UserMedia().fan(_waveformparticles.waveform);
 
-  // console.log(media);
-  // window.media = media;
-  // media.enumerateDevices().then(function(devices){
-  // 	console.log(devices);
-  // });
-  //
+  console.log(media);
+  window.media = media;
+  media.enumerateDevices().then(function (devices) {
+    console.log(devices);
+  });
+
   // media.open().then(function(){
   // 	//opening is activates the microphone
   // 	//starting lets audio through
