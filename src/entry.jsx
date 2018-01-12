@@ -11,7 +11,6 @@ export var viewing = false;
 
 document.addEventListener("DOMContentLoaded", () => {
 
-
   var fft = new Tone.Analyser('fft', 32);
   var delay = new Tone.FeedbackDelay(0.5, 0.5).fan(waveform, fft).toMaster();
   delay.wet._param.value = 0.5;
