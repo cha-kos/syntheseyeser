@@ -14,9 +14,12 @@
 			export function init() {
 
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.z = 75;
-        camera.position.y = 120;
-        camera.position.x = -500;
+				camera.position.z = -25;
+        camera.position.y = 600;
+        camera.position.x = 0;
+				// camera.position.z = 75;
+        // camera.position.y = 120;
+        // camera.position.x = -500;
 				scene = new THREE.Scene();
 				particles = [];
 				var PI2 = Math.PI * 2;
@@ -98,6 +101,9 @@
   				camera.position.x += ( mouseX - camera.position.x ) * 0.05;
   				camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
         }
+        // console.log(`y ${camera.position.y}`);
+        // console.log(`x ${camera.position.x}`);
+        // console.log(`z ${camera.position.z}`);
 				camera.lookAt( scene.position );
 
         var array = waveform.analyse();
@@ -123,12 +129,3 @@
 				}
 				renderer.render( scene, camera );
 			}
-
-
-function inc(){
-  var x;
-  return function(){
-    x+= 1;
-    console.log(x);
-  };
-}

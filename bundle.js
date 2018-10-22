@@ -205,10 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
       offset = (_tone2.default.Transport.seconds + offset * duration) / duration;
       player.stop();
       _tone2.default.Transport.pause();
-      console.log(_tone2.default.Transport.seconds);
-      console.log("seconds");
-      console.log(player.buffer._buffer.duration);
-      console.log("duration");
       playButton.removeChild(pause);
       playButton.appendChild(play);
     }
@@ -250,7 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   trackSlide.addEventListener('mousedown', function (e) {
     offset = (e.x - 30) / 200;
-    console.log(offset);
     trackStatus.style.width = '' + offset * 200;
     if (player.state === "started") {
       _tone2.default.Transport.stop();
@@ -372,12 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var media = new _tone2.default.UserMedia().fan(_waveformparticles.waveform);
-
-  console.log(media);
-  window.media = media;
-  media.enumerateDevices().then(function (devices) {
-    console.log(devices);
-  });
+  media.enumerateDevices().then(function (devices) {});
 
   // media.open().then(function(){
   // 	//opening is activates the microphone
@@ -22948,12 +22938,12 @@ var waveform = exports.waveform = new _tone2.default.Analyser('waveform', 128);
 function init() {
 
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-	// camera.position.z = -25;
-	// camera.position.y = 500;
-	// camera.position.x = 0;
-	camera.position.z = 75;
-	camera.position.y = 120;
-	camera.position.x = -500;
+	camera.position.z = -25;
+	camera.position.y = 600;
+	camera.position.x = 0;
+	// camera.position.z = 75;
+	// camera.position.y = 120;
+	// camera.position.x = -500;
 	scene = new THREE.Scene();
 	particles = [];
 	var PI2 = Math.PI * 2;
@@ -23035,6 +23025,9 @@ function render() {
 		camera.position.x += (mouseX - camera.position.x) * 0.05;
 		camera.position.y += (-mouseY - camera.position.y) * 0.05;
 	}
+	// console.log(`y ${camera.position.y}`);
+	// console.log(`x ${camera.position.x}`);
+	// console.log(`z ${camera.position.z}`);
 	camera.lookAt(scene.position);
 
 	var array = waveform.analyse();
@@ -23057,16 +23050,7 @@ function render() {
 			}
 		}
 	}
-
 	renderer.render(scene, camera);
-}
-
-function inc() {
-	var x;
-	return function () {
-		x += 1;
-		console.log(x);
-	};
 }
 
 /***/ })

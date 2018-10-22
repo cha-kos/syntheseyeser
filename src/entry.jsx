@@ -141,10 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
          offset = (Tone.Transport.seconds + (offset * duration)) / duration;
          player.stop();
          Tone.Transport.pause();
-         console.log(Tone.Transport.seconds);
-         console.log("seconds");
-         console.log(player.buffer._buffer.duration);
-         console.log("duration");
          playButton.removeChild(pause);
          playButton.appendChild(play);
        }
@@ -186,7 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
      trackSlide.addEventListener('mousedown', (e) => {
        offset = (e.x - 30) / 200;
-       console.log(offset);
        trackStatus.style.width = `${offset * 200}`;
        if (player.state === "started") {
          Tone.Transport.stop();
@@ -312,11 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         let media = new Tone.UserMedia().fan(waveform);
-
-        console.log(media);
-        window.media = media;
         media.enumerateDevices().then(function(devices){
-        	console.log(devices);
         });
 
         // media.open().then(function(){
